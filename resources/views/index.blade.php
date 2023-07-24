@@ -10,6 +10,7 @@
 <body>
     @include('inc/header')
     <div class="area-site">
+        {{-- {{dd($dadosGraficoBars)}} --}}
         <div class="first-block">
             <div class="title-home">
                 <h1 class="home-h1">Relatório consolidado de cursos</h1>
@@ -25,6 +26,10 @@
                 <div class="single-course"></div>
                 <div class="single-course"></div>
             </div>
+        </div>
+        <div class="third-block">
+            <canvas id="chart-3" class="lg-chart" data-dados-grafico="{{ $dadosGraficoStack }}"></canvas>
+            <canvas id="chart-4" class="lg-chart" data-dados-grafico="{{ $dadosGraficoBars }}"></canvas>
         </div>
     </div>
     @include('inc/footer')

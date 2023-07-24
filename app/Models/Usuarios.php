@@ -90,4 +90,30 @@ class Usuarios extends Model
         return $dados;
     }
 
+    public function getAlunosAgrupadosPorCursoPorAno(){
+        $dados = DB::table($this->table)
+            ->select('ano_egresso')
+            ->selectRaw('
+                SUM(CASE WHEN curso = 0 THEN 1 ELSE 0 END) as curso0,
+                SUM(CASE WHEN curso = 1 THEN 1 ELSE 0 END) as curso1,
+                SUM(CASE WHEN curso = 2 THEN 1 ELSE 0 END) as curso2
+            ')
+            ->groupBy('ano_egresso')
+            ->orderBy('ano_egresso', 'asc')
+            ->get();
+
+        return $dados;
+    }
+
+    public function getAlunosEmpregados(){
+        $dados = DB::table($this->table)
+            ->select('ano_egresso')
+            ->selectRaw('SUM(CASE WHEN is_employed = 1 THEN 1 ELSE 0 END) as empregados')
+            ->where('is_employed', '1')
+            ->groupBy('ano_egresso')
+            ->orderBy('ano_egresso', 'asc')
+            ->get();
+        return $dados;
+    }
+
 }

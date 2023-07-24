@@ -15,6 +15,7 @@ return new class extends Migration
             $table->integer('curso');
             $table->string('password');
             $table->integer('type');
+            $table->integer('is_employed');
             $table->integer('ano_ingresso');
             $table->integer('ano_egresso');
             $table->timestamp('email_verified_at')->nullable();

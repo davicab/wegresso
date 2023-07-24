@@ -1,9 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     createChart1();
     createChart2();
+    createChart3();
+    createChart4();
 });
-
+//criaçao do grafico de linhas
 function createChart1(){
+  //seleciona o elemento chart do html
   const chartDataElement = document.getElementById('chart-1');
 
   // Recupera o JSON contendo os dados do atributo data
@@ -13,6 +16,7 @@ function createChart1(){
   const data = JSON.parse(jsonString);
 
   const ctx = document.getElementById('chart-1').getContext('2d');
+  //cria o chart, estruturando os dados 
   new Chart(ctx, {
     type: 'line',
     data: {
@@ -47,7 +51,7 @@ function createChart1(){
     }
   });
 }
-
+// criação do grafico de 'torta'
 function createChart2(){
   const chartDataElement = document.getElementById('chart-2');
 
@@ -79,6 +83,91 @@ function createChart2(){
     },
     options: {
       responsive: true
+    }
+  });
+}
+//criacao do grafico "stacked"
+function createChart3(){
+  const chartDataElement = document.getElementById('chart-3');
+
+  // Recupera o JSON contendo os dados do atributo data
+  const jsonString = chartDataElement.getAttribute('data-dados-grafico');
+
+  // Faz o parsing do JSON para obter os dados
+  const data = JSON.parse(jsonString);
+
+  const ctx = document.getElementById('chart-3').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.data.map(entry => entry.ano_egresso),
+      datasets: [{
+        label: data.labels[0],
+        data: data.data.map(entry => entry.curso0),
+        backgroundColor: 'rgba(255, 99, 132, 0.5)'
+      }, {
+        label: data.labels[1],
+        data: data.data.map(entry => entry.curso1),
+        backgroundColor: 'rgba(54, 162, 235, 0.5)'
+      }, {
+        label: data.labels[2],
+        data: data.data.map(entry => entry.curso2),
+        backgroundColor: 'rgba(255, 206, 86, 0.5)'
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          stacked: true,
+          title: {
+            display: true,
+            text: 'Ano'
+          }
+        },
+        y: {
+          stacked: true,
+          title: {
+            display: true,
+            text: 'Alunos'
+          }
+        }
+      }
+    }
+  });
+}
+//criacao do grafico "bars"
+function createChart4(){
+  const chartDataElement = document.getElementById('chart-4');
+
+  // Recupera o JSON contendo os dados do atributo data
+  const jsonString = chartDataElement.getAttribute('data-dados-grafico');
+
+  // Faz o parsing do JSON para obter os dados
+  const data = JSON.parse(jsonString);
+  console.log(data.data)
+  console.log(data.data.map(entry => entry.empregados))
+
+  const ctx = document.getElementById('chart-4').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: 'Valores',
+        data: data.data.map(entry => entry.empregados),
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
     }
   });
 }

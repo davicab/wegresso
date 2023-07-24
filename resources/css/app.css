@@ -1,5 +1,6 @@
 *{
     box-sizing: border-box;
+    font-family: system-ui;
 }
 body{
     margin: 0;
@@ -117,10 +118,11 @@ footer{
     width: 100%;
     opacity: 1;
     margin-top: 25px;
+
 }
 .second-block{
     width: 100%;
-    height: 300px;
+    height: 250px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -153,4 +155,10 @@ footer{
 }
 .single-course{
 
+}
+.third-block{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
 }
