@@ -12,11 +12,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->integer('curso');
             $table->string('password');
             $table->integer('type');
             $table->integer('ano_ingresso');
             $table->integer('ano_egresso');
+            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('reset_password_token_expires_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

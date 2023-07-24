@@ -20,10 +20,18 @@ class Usuarios extends Model
         'email_verified_at'
     ];
 
+    // Usuarios type = 0 -- Root
+    // Usuarios type = 1 -- Administradores
+    // Usuarios type = 2 -- Alunos
+
+    // Curso = 0 -- Computação
+    // Curso = 1 -- Eletrica
+    // Curso = 2 -- Civil
+
     public function getAlunos(){
         $dados = DB::table($this->table)
             ->select('id', 'name', 'ano_egresso')
-            ->where('type', '1')
+            ->where('type', '2')
             ->orderBy('name', 'asc')
             ->get();
         return $dados;
@@ -31,6 +39,7 @@ class Usuarios extends Model
 
     public function getAnosEgresso(){
         $dados = DB::table($this->table)
+            ->where('type', '2')
             ->distinct()
             ->orderByRaw('CAST(ano_egresso AS UNSIGNED)')
             ->pluck('ano_egresso');
@@ -40,9 +49,34 @@ class Usuarios extends Model
 
     public function getAlunosAgrupadosPorAnoEgresso(){
         $dados = DB::table($this->table)
+            ->where('type', '2')
             ->selectRaw('ano_egresso, COUNT(*) as count')
             ->groupBy('ano_egresso')
             ->orderBy('ano_egresso', 'asc')
+            ->get();
+        return $dados;
+    }
+
+    public function getAlunosComputacao(){
+        $dados = DB::table($this->table)
+            ->where('curso', '0')
+            ->select('id', 'name', 'ano_egresso', 'ano_ingresso')
+            ->get();
+        return $dados;
+    }
+
+    public function getAlunosEletrica(){
+        $dados = DB::table($this->table)
+            ->where('curso', '1')
+            ->select('id', 'name', 'ano_egresso', 'ano_ingresso')
+            ->get();
+        return $dados;
+    }
+
+    public function getAlunosCivil(){
+        $dados = DB::table($this->table)
+            ->where('curso', '2')
+            ->select('id', 'name', 'ano_egresso', 'ano_ingresso')
             ->get();
         return $dados;
     }
@@ -51,6 +85,7 @@ class Usuarios extends Model
         $dados = DB::table($this->table)
             ->select('*')
             ->where('email', $email)
+            ->where('type', '2')
             ->first();
         return $dados;
     }

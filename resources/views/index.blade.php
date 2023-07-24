@@ -10,10 +10,22 @@
 <body>
     @include('inc/header')
     <div class="area-site">
-        @php
-            $dadosGraficoJSON = json_encode($dadosGrafico);
-        @endphp
-        <canvas id="chart" class="lg-chart" data-dados-grafico="{{ $dadosGraficoJSON }}"></canvas>
+        <div class="first-block">
+            <div class="title-home">
+                <h1 class="home-h1">Relatório consolidado de cursos</h1>
+                <hr class="dotted-line">
+            </div>
+            <canvas id="chart-1" class="lg-chart" data-dados-grafico="{{ $dadosGrafico }}"></canvas>
+            <canvas id="chart-2" class="lg-chart" data-dados-grafico="{{ $dadosGraficoPie }}"></canvas>
+        </div>
+        <div class="second-block">
+            <div class="courses-view">
+                <span class="top-courses">Cursos Disponíveis</span>
+                <div class="single-course"></div>
+                <div class="single-course"></div>
+                <div class="single-course"></div>
+            </div>
+        </div>
     </div>
     @include('inc/footer')
 </body>
