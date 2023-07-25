@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CursosController;
+use App\Http\Controllers\GraficosController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PasswordController;
 use Illuminate\Support\Facades\Route;
@@ -19,3 +20,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/{curso}', [CursosController::class, 'index']);
+
+Route::get('/cursos/graficos', [GraficosController:: class, 'index']);

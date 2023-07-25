@@ -26,15 +26,15 @@
         <div class="second-block">
             <div class="courses-view">
                 <span class="top-courses">Cursos Disponíveis</span>
-                <a class="single-course">
+                <a class="single-course" href="{{url('/')}}/computacao">
                     <span class="course-span">Engenharia de Computação</span>
                     <img src="{{asset('images/pc.png')}}" alt="" width="120px" height="120px">
                 </a>
-                <a class="single-course">
+                <a class="single-course" href="{{url('/')}}/eletrica">
                     <span class="course-span">Engenharia Elétrica</span>
                     <img src="{{asset('images/Gear.png')}}" alt="" width="120px" height="120px">
                 </a>
-                <a class="single-course">
+                <a class="single-course" href="{{url('/')}}/civil">
                     <span class="course-span">Engenharia Civil</span>
                     <img src="{{asset('images/civil.png')}}" alt="" width="120px" height="120px">
                 </a>
@@ -47,4 +47,7 @@
     </div>
     @include('inc/footer')
 </body>
+<script>
+    var page = 'home'
+</script>
 </html>

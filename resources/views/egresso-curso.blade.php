@@ -16,12 +16,28 @@
         </div>
         <div class="area-egressos">
             @foreach ($egressos as $egresso)
-                <div class="single-egresso">
-                    {{$egresso->name}}, {{$egresso->ano_egresso}}
+                <div id="lista-usuarios" class="single-egresso">
+                    <span class="egresso-name">{{$egresso->name}}</span>
+                    <span class="egress-year">egresso em: {{$egresso->ano_egresso}}</span>
+                    <span class="egresso-more"> . . . </span>
                 </div>
             @endforeach
+            <a href="{{url('/')}}/cursos/grafico" class="generate-graph">
+                <span>Representação gráfica</span>
+                <img class="animation-hand" src="{{asset('/images/HandPointing.svg')}}" alt="mão clicando" width="25px" height="25px">
+            </a>
         </div>
     </div>
     @include('inc/footer')
 </body>
+<script>
+    var page = 'curso';
+    const nomes = document.querySelectorAll('.egresso-name');
+    for (let i = 0; i < nomes.length; i++) {
+      const nomeCompleto = nomes[i].textContent;
+      const primeiraLetra = nomeCompleto.charAt(0);
+      const nomeProtegido = primeiraLetra + '*'.repeat(nomeCompleto.length - 1);
+      nomes[i].textContent = nomeProtegido;
+    }
+  </script>
 </html>

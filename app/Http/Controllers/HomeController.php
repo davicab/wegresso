@@ -29,8 +29,6 @@ class HomeController extends Controller
         $alunosEletrica = $this->usuarios->getAlunosEletrica();
         $alunosCivil = $this->usuarios->getAlunosCivil();
 
-        $this->dadosPagina['test'] = $this->usuarios->getAlunosEmpregados();
-
         $dadosGraficoPie = json_encode([
             'labels' => ['Engenharia de Computação', 'Engenharia Elétrica', 'Engenharia Civil'],
             'data' => [count($alunosComputação), count($alunosEletrica), count($alunosCivil)]
@@ -41,7 +39,7 @@ class HomeController extends Controller
             'data' => $contagemPorCursoPorAno,
         ]);
 
-        // Converta os resultados em um formato que pode ser facilmente lido pelo JavaScript (JSON)
+        // Converte os resultados em um formato que pode ser facilmente lido pelo JavaScript (JSON)
         $dadosGrafico = json_encode([
             'labels' => $contagemPorAno->pluck('ano_egresso')->toArray(),
             'data' => $contagemPorAno->pluck('count')->toArray(),

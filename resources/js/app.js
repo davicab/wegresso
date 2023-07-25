@@ -1,9 +1,17 @@
-document.addEventListener('DOMContentLoaded', function() {
-    createChart1();
-    createChart2();
-    createChart3();
-    createChart4();
-});
+var currentPage = page;
+switch (currentPage){
+    case 'home':
+        document.addEventListener('DOMContentLoaded', function() {
+          createChart1();
+          createChart2();
+          createChart3();
+          createChart4();
+        });
+      break;
+    case 'graficos':
+      createChartCurso();
+      break
+}
 //criaçao do grafico de linhas
 function createChart1(){
   //seleciona o elemento chart do html
@@ -145,14 +153,12 @@ function createChart4(){
 
   // Faz o parsing do JSON para obter os dados
   const data = JSON.parse(jsonString);
-  console.log(data.data)
-  console.log(data.data.map(entry => entry.empregados))
 
   const ctx = document.getElementById('chart-4').getContext('2d');
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: data.labels,
+      labels: data.data.map(entry => entry.ano_egresso),
       datasets: [{
         label: 'Valores',
         data: data.data.map(entry => entry.empregados),
@@ -166,6 +172,52 @@ function createChart4(){
       scales: {
         y: {
           beginAtZero: true
+        }
+      }
+    }
+  });
+}
+function createChartCurso(){
+  const chartDataElement = document.getElementById('chart-curso');
+
+  // Recupera o JSON contendo os dados do atributo data
+  const jsonString = chartDataElement.getAttribute('data-dados-grafico');
+
+  // Faz o parsing do JSON para obter os dados
+  const data = JSON.parse(jsonString);
+
+  console.log(data)
+
+  const ctx = document.getElementById('chart-curso').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: 'Formados por ano',
+        data: data.data,
+        backgroundColor: 'rgba(0, 123, 255, 0.5)',
+        borderColor: 'rgba(0, 123, 255, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+            display: true,
+            title: {
+              display: true,
+              text: 'Ano de Egresso', // Rótulo do eixo x
+            }
+          },
+        y: {
+            beginAtZero: false,
+            display: true,
+            title: {
+                display: true,
+                text: 'Contagem de Alunos', // Rótulo do eixo y
+            }
         }
       }
     }

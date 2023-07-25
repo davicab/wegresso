@@ -60,7 +60,7 @@ class Usuarios extends Model
     public function getAlunosComputacao(){
         $dados = DB::table($this->table)
             ->where('curso', '0')
-            ->select('id', 'name', 'ano_egresso', 'ano_ingresso')
+            ->select('ano_egresso', 'ano_ingresso')
             ->get();
         return $dados;
     }
@@ -68,7 +68,7 @@ class Usuarios extends Model
     public function getAlunosEletrica(){
         $dados = DB::table($this->table)
             ->where('curso', '1')
-            ->select('id', 'name', 'ano_egresso', 'ano_ingresso')
+            ->select('id', 'ano_egresso', 'ano_ingresso')
             ->get();
         return $dados;
     }
@@ -76,7 +76,7 @@ class Usuarios extends Model
     public function getAlunosCivil(){
         $dados = DB::table($this->table)
             ->where('curso', '2')
-            ->select('id', 'name', 'ano_egresso', 'ano_ingresso')
+            ->select('id', 'ano_egresso', 'ano_ingresso')
             ->get();
         return $dados;
     }
@@ -121,7 +121,30 @@ class Usuarios extends Model
             ->select('name', 'ano_egresso')
             ->where('curso', $curso)
             ->where('type', '2')
-            ->orderBy('name', 'asc')
+            ->orderBy('ano_egresso', 'asc')
+            ->get();
+        return $dados;
+    }
+
+    public function getCountAlunosByCurso($curso){
+        $dados = DB::table($this->table)
+            ->selectRaw('ano_egresso, COUNT(*) as count')
+            ->where('curso', $curso)
+            ->where('type', '2')
+            ->groupBy('ano_egresso')
+            ->orderBy('ano_egresso', 'asc')
+            ->get();
+        return $dados;
+    }
+
+    public function getAlunosEmpregadosCurso($curso){
+        $dados = DB::table($this->table)
+            ->select('ano_egresso')
+            ->selectRaw('SUM(CASE WHEN is_employed = 1 THEN 1 ELSE 0 END) as empregados')
+            ->where('is_employed', '1')
+            ->where('curso', $curso)
+            ->groupBy('ano_egresso')
+            ->orderBy('ano_egresso', 'asc')
             ->get();
         return $dados;
     }
