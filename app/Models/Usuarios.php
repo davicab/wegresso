@@ -116,4 +116,14 @@ class Usuarios extends Model
         return $dados;
     }
 
+    public function getAlunoByCurso($curso){
+        $dados = DB::table($this->table)
+            ->select('name', 'ano_egresso')
+            ->where('curso', $curso)
+            ->where('type', '2')
+            ->orderBy('name', 'asc')
+            ->get();
+        return $dados;
+    }
+
 }

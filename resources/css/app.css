@@ -1,6 +1,7 @@
 *{
     box-sizing: border-box;
     font-family: system-ui;
+    user-select: none;
 }
 body{
     margin: 0;
@@ -15,6 +16,7 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 }
 .logo-container{
     display: flex;
@@ -73,11 +75,13 @@ footer{
 .area-site{
     width: 100%;
     height: auto;
-    background-color: #FFF;
+    background-color: #F7F7F7;
     display: flex;
     flex-direction: column;
     padding: 12px;
     gap: 15px;
+    max-width: 1280px;
+    margin: 0 auto;
 }
 .lg-chart{
     width: 100%;
@@ -91,14 +95,15 @@ footer{
 }
 .first-block{
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin: 20px 0;
 }
 .title-home{
    display: flex;
    gap: 15px;
    width: 100%;
-   height: 50px; 
+   height: 50px;
 }
 .home-h1{
     padding-left: 15px;
@@ -126,6 +131,7 @@ footer{
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 20px 0;
 }
 .courses-view{
     width: 80%;
@@ -135,15 +141,18 @@ footer{
     border: 5px solid #17882C;
     border-radius: 15px;
     justify-content: space-around;
+    padding: 15px;
+    gap: 15px;
+    padding-top: 0px;
 }
 .top-courses{
-    width: auto;
+    width: 210px;
     height: 50px;
     background-color: #17882C;
     padding: 5px 15px;
     color: #FFF;
     font-weight: 900;
-    position: relative;
+    position: absolute;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -154,11 +163,54 @@ footer{
     justify-content: center;
 }
 .single-course{
-
+    position: relative;
+    width: 100%;
+    height: calc(100% - 60px);
+    top: 60px;
+    padding: 20px;
+    border-radius: 20px;
+    border: 5px solid #008AA7;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .third-block{
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    gap: 15px;
+    margin: 20px 0;
+
+}
+.course-span{
+    font-weight: 900;
+    font-size: 18px;
+}
+.area-egressos{
+    width: 100%;
+    height: auto;
+    border: 1px solid #cecece;
+    border-radius: 12px;
+    background-color: #FFF;
+    padding: 12px;
+}
+.single-egresso{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #f7f7f7;
+    border: 1px solid #cecece;
+    border-bottom: none;
+}
+.single-egresso:first-child{
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+}
+.single-egresso:last-child{
+    border-bottom: 1px solid #cecece;
+    border-radius: 0 0 8px 8px;
 }
