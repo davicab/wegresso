@@ -21,7 +21,7 @@ class HomeController extends Controller
 
         $contagemPorAno = $this->usuarios->getAlunosAgrupadosPorAnoEgresso();
 
-        $contagemPorCursoPorAno = $this->usuarios->getAlunosAgrupadosPorCursoPorAno();
+        $contagemGeralPorAno = $this->usuarios->getAlunosAgrupadosGeralPorAno();
 
         $alunosEmpregados = $this->usuarios->getAlunosEmpregados();
 
@@ -36,7 +36,7 @@ class HomeController extends Controller
 
         $dadosGraficoStack = json_encode([
             'labels' => ['Engenharia de Computação', 'Engenharia Elétrica', 'Engenharia Civil'],
-            'data' => $contagemPorCursoPorAno,
+            'data' => $contagemGeralPorAno,
         ]);
 
         // Converte os resultados em um formato que pode ser facilmente lido pelo JavaScript (JSON)

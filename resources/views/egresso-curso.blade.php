@@ -22,7 +22,7 @@
                     <span class="egresso-more"> . . . </span>
                 </div>
             @endforeach
-            <a href="{{url('/')}}/cursos/grafico" class="generate-graph">
+            <a href="{{url('/')}}/cursos/graficos" class="generate-graph">
                 <span>Representação gráfica</span>
                 <img class="animation-hand" src="{{asset('/images/HandPointing.svg')}}" alt="mão clicando" width="25px" height="25px">
             </a>

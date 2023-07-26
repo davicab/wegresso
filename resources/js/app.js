@@ -8,8 +8,18 @@ switch (currentPage){
           createChart4();
         });
       break;
+    case 'curso':
+        document.addEventListener('DOMContentLoaded', function() {
+          createChartCurso();
+        });
+      break
     case 'graficos':
-      createChartCurso();
+        handleCheck();
+        document.addEventListener('DOMContentLoaded', function() {
+          chartBarReload();
+          chartLineReload();
+          chartHoBarReload();
+        });
       break
 }
 //criaçao do grafico de linhas
@@ -218,6 +228,164 @@ function createChartCurso(){
                 display: true,
                 text: 'Contagem de Alunos', // Rótulo do eixo y
             }
+        }
+      }
+    }
+  });
+}
+
+let loadChart;
+let loadLineChart;
+let loadHChart;
+function handleCheck(){
+    let checkboxes = document.getElementsByName('curso');
+    const canvas = document.getElementById('chart-1');
+
+    checkboxes.forEach((item, index) => {
+
+        var cut_index = [...checkboxes]
+        cut_index.splice(index, 1);
+
+        item.addEventListener("click", () =>{
+
+            if(item.checked == false) return
+
+            cut_index.forEach((item, index) => {
+                cut_index[index].checked = false
+            });
+            
+            if (item.checked) {
+                const obj = JSON.parse(item.value)
+
+                loadChart.data.datasets[0].data = obj.data.map(entry => entry.curso);
+                loadChart.data.datasets[0].label = `Egressos de ${obj.labels}`
+                loadChart.update();
+
+                loadLineChart.data.datasets[0].data = obj.empregados.map(entry => entry.empregados);
+                loadLineChart.update();
+
+                loadHChart.data.datasets[0].data = [obj.mediaFormatura];
+                loadHChart.data.labels = obj.labels
+                loadHChart.update();
+            } else {
+                canvas.dataset.dadosGrafico = "";
+            }
+        })
+    });
+}
+function chartBarReload() {
+  const chartDataElement = document.getElementById('chart-1');
+  const jsonString = chartDataElement.getAttribute('data-dados-grafico');
+
+  const data = JSON.parse(jsonString);
+
+  const ctx = document.getElementById('chart-1').getContext('2d');
+  loadChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: data.data.map(entry => entry.ano_egresso),
+          datasets: [{
+              label: `Egressos de ${data.labels}`,
+              data: data.data.map(entry => entry.curso),
+              backgroundColor: 'rgba(54, 162, 235, 0.5)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive: true,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Ano'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Alunos'
+              }
+            }
+          }
+      }
+  });
+}
+function chartLineReload(){
+    const chartDataElement = document.getElementById('chart-2');
+
+    const jsonString = chartDataElement.getAttribute('data-dados-grafico');
+  
+    const data = JSON.parse(jsonString);
+  
+    const ctx = document.getElementById('chart-2').getContext('2d');
+    //cria o chart, estruturando os dados 
+    loadLineChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data.empregados.map(entry => entry.ano_egresso),
+        datasets: [{
+          label: 'Egressos empregados por ano',
+          data: data.empregados.map(entry => entry.empregados),
+          backgroundColor: 'rgba(0, 123, 255, 0.5)',
+          borderColor: 'rgba(0, 123, 255, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Ano de Egresso', // Rótulo do eixo x
+              }
+            },
+          y: {
+              beginAtZero: true,
+              display: true,
+              title: {
+                  display: true,
+                  text: 'Contagem de Alunos', // Rótulo do eixo y
+              }
+          }
+        }
+      }
+    });
+}
+function chartHoBarReload(){
+  const chartDataElement = document.getElementById('chart-3');
+
+  const jsonString = chartDataElement.getAttribute('data-dados-grafico');
+
+  const data = JSON.parse(jsonString);
+  console.log(data)
+
+  const ctx = document.getElementById('chart-3').getContext('2d');
+  //cria o chart, estruturando os dados 
+  loadHChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: 'Média de tempo de conclusão (anos)',
+        data: [data.mediaFormatura],
+        backgroundColor: 'rgba(0, 123, 255, 0.5)',
+        borderColor: 'rgba(0, 123, 255, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      scales: {
+        x: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Tempo de Conclusão (anos)'
+          }
         }
       }
     }

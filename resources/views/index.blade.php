@@ -10,7 +10,6 @@
 <body>
     @include('inc/header')
     <div class="area-site">
-        {{-- {{dd($dadosGraficoBars)}} --}}
         <div class="title-home">
             <h1 class="home-h1">Relatório consolidado de cursos</h1>
             <hr class="dotted-line">

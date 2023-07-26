@@ -68,7 +68,7 @@ class Usuarios extends Model
     public function getAlunosEletrica(){
         $dados = DB::table($this->table)
             ->where('curso', '1')
-            ->select('id', 'ano_egresso', 'ano_ingresso')
+            ->select('ano_egresso', 'ano_ingresso')
             ->get();
         return $dados;
     }
@@ -76,7 +76,7 @@ class Usuarios extends Model
     public function getAlunosCivil(){
         $dados = DB::table($this->table)
             ->where('curso', '2')
-            ->select('id', 'ano_egresso', 'ano_ingresso')
+            ->select('ano_egresso', 'ano_ingresso')
             ->get();
         return $dados;
     }
@@ -90,7 +90,7 @@ class Usuarios extends Model
         return $dados;
     }
 
-    public function getAlunosAgrupadosPorCursoPorAno(){
+    public function getAlunosAgrupadosGeralPorAno(){
         $dados = DB::table($this->table)
             ->select('ano_egresso')
             ->selectRaw('

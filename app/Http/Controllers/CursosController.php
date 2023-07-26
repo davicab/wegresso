@@ -33,10 +33,6 @@ class CursosController extends Controller
     
         if (array_key_exists($curso, $requestCursos)) {
             $egressosData = $this->usuarios->getAlunoByCurso($requestCursos[$curso]);
-
-            $contagemAlunosCurso = $this->usuarios->getCountAlunosByCurso($requestCursos[$curso]);
-    
-    
             // Proteger os nomes dos usuários e criar o array $egressosFormatados
             $egressosFormatados = [];
             foreach ($egressosData as $egressoData) {
@@ -46,13 +42,7 @@ class CursosController extends Controller
                 $egressosFormatados[] = $egresso;
             }
 
-            $dadosGrafico = json_encode([
-                'labels' => $contagemAlunosCurso->pluck('ano_egresso')->toArray(),
-                'data' => $contagemAlunosCurso->pluck('count')->toArray(),
-            ]);
-
             $this->dadosPagina['curso'] = array_search($requestCursos[$curso], $rightCursos);
-            $this->dadosPagina['dadosGrafico'] = $dadosGrafico;
             $this->dadosPagina['egressos'] = $egressosFormatados;
         }
     
