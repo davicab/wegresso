@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 </head>
 <body>
-    {{-- @include('inc/header') --}}
+    @include('inc/header')
     <div class="area-site">
         {{-- {{dd(json_decode($dadosGraficoComp))}} --}}
         <div class="title-home">

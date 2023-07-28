@@ -12,15 +12,15 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->integer('curso');
+            $table->integer('curso')->nullable();
             $table->string('password');
-            $table->integer('type');
-            $table->integer('is_employed');
-            $table->integer('ano_ingresso');
-            $table->integer('ano_egresso');
+            $table->integer('type')->nullable();
+            $table->integer('is_employed')->nullable();
+            $table->integer('ano_ingresso')->nullable();
+            $table->integer('ano_egresso')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('reset_password_token_expires_at')->nullable();
-            $table->rememberToken();
+            $table->rememberToken()->nullable();
             $table->timestamps();
         });
     }

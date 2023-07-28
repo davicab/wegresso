@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuarios;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -54,6 +56,14 @@ class HomeController extends Controller
         $this->dadosPagina['dadosGraficoPie'] = $dadosGraficoPie;
         $this->dadosPagina['dadosGraficoStack'] = $dadosGraficoStack;
         $this->dadosPagina['dadosGraficoBars'] = $dadosGraficoBars;
+        
+        if(Auth::check()){
+            $user = Auth::user()->type;
+            dd($user);
+            if(isset($user->attributes['type']) && ($user->attributes['type'] == 0 || $user->attributes['type'] == 1)){
+                dd("root");
+            }
+        }
 
         return view(self::VIEW, $this->dadosPagina);
     }

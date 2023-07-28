@@ -7,6 +7,10 @@ body{
     margin: 0;
     padding: 0;
     background-color: #f7f7f7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 header{
     width: 100%;
@@ -278,4 +282,68 @@ footer{
 }
 .d-none{
     display: none;
+}
+.custom-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.custom-label {
+    text-align: right;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.custom-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.custom-input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.custom-checkbox {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.custom-checkbox-label {
+    margin-left: 5px;
+}
+
+.custom-submit-button {
+    width: 100%;
+    background-color: #42844b;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.custom-submit-button:hover {
+    background-color: #4e9858;
+}
+
+.custom-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.custom-link:hover {
+    text-decoration: underline;
 }

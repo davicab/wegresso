@@ -1,8 +1,10 @@
 <header>
-    <div class="logo-container">
+    <a href="{{url('/')}}" class="logo-container">
         <img src="{{asset('images/WE-logo.png')}}" alt="logo">
-    </div>
+    </a>
     <div class="login-but">
-        <img src="{{asset('images/account.png')}}" alt="">
+        <a href="{{url('/')}}/login">
+            <img src="{{asset('images/account.png')}}" alt="">
+        </a>
     </div>
 </header>

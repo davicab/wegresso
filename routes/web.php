@@ -4,6 +4,7 @@ use App\Http\Controllers\CursosController;
 use App\Http\Controllers\GraficosController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PasswordController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +18,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/{curso}', [CursosController::class, 'index']);
 
 Route::get('/cursos/graficos', [GraficosController:: class, 'index']);
+
+Route::get('/register', function () {
+    return redirect()->to(config('app.url').'/', 301);
+});
+Route::get('/logout', function () {
+    return redirect()->to(config('app.url').'/', 301);
+});
