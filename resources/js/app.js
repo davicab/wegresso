@@ -9,9 +9,6 @@ switch (currentPage){
         });
       break;
     case 'curso':
-        document.addEventListener('DOMContentLoaded', function() {
-          createChartCurso();
-        });
       break
     case 'graficos':
         handleCheck();
@@ -34,7 +31,7 @@ function createChart1(){
   const data = JSON.parse(jsonString);
 
   const ctx = document.getElementById('chart-1').getContext('2d');
-  //cria o chart, estruturando os dados 
+  //cria o chart, estruturando os dados
   new Chart(ctx, {
     type: 'line',
     data: {
@@ -187,53 +184,6 @@ function createChart4(){
     }
   });
 }
-function createChartCurso(){
-  const chartDataElement = document.getElementById('chart-curso');
-
-  // Recupera o JSON contendo os dados do atributo data
-  const jsonString = chartDataElement.getAttribute('data-dados-grafico');
-
-  // Faz o parsing do JSON para obter os dados
-  const data = JSON.parse(jsonString);
-
-  console.log(data)
-
-  const ctx = document.getElementById('chart-curso').getContext('2d');
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: data.labels,
-      datasets: [{
-        label: 'Formados por ano',
-        data: data.data,
-        backgroundColor: 'rgba(0, 123, 255, 0.5)',
-        borderColor: 'rgba(0, 123, 255, 1)',
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        x: {
-            display: true,
-            title: {
-              display: true,
-              text: 'Ano de Egresso', // Rótulo do eixo x
-            }
-          },
-        y: {
-            beginAtZero: false,
-            display: true,
-            title: {
-                display: true,
-                text: 'Contagem de Alunos', // Rótulo do eixo y
-            }
-        }
-      }
-    }
-  });
-}
-
 let loadChart;
 let loadLineChart;
 let loadHChart;
@@ -253,7 +203,7 @@ function handleCheck(){
             cut_index.forEach((item, index) => {
                 cut_index[index].checked = false
             });
-            
+
             if (item.checked) {
                 const obj = JSON.parse(item.value)
 
@@ -315,11 +265,11 @@ function chartLineReload(){
     const chartDataElement = document.getElementById('chart-2');
 
     const jsonString = chartDataElement.getAttribute('data-dados-grafico');
-  
+
     const data = JSON.parse(jsonString);
-  
+
     const ctx = document.getElementById('chart-2').getContext('2d');
-    //cria o chart, estruturando os dados 
+    //cria o chart, estruturando os dados
     loadLineChart = new Chart(ctx, {
       type: 'line',
       data: {
@@ -360,10 +310,9 @@ function chartHoBarReload(){
   const jsonString = chartDataElement.getAttribute('data-dados-grafico');
 
   const data = JSON.parse(jsonString);
-  console.log(data)
 
   const ctx = document.getElementById('chart-3').getContext('2d');
-  //cria o chart, estruturando os dados 
+  //cria o chart, estruturando os dados
   loadHChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -390,4 +339,8 @@ function chartHoBarReload(){
       }
     }
   });
+}
+
+function goBack() {
+    window.history.back();
 }

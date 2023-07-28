@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuarios;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use stdClass;
 
 class CursosController extends Controller
@@ -11,7 +12,7 @@ class CursosController extends Controller
     private $usuarios;
     private $dadosPagina;
 
-    const VIEW = 'egresso-curso';
+    const VIEW = 'curso';
 
     public function __construct() {
         $this->usuarios = new Usuarios();
@@ -24,13 +25,13 @@ class CursosController extends Controller
             'eletrica' => 1,
             'civil' => 2,
         ];
-    
+
         $rightCursos = [
             'Engenharia de Computação' => 0,
             'Engenharia Elétrica' => 1,
             'Engenharia Civil' => 2,
         ];
-    
+
         if (array_key_exists($curso, $requestCursos)) {
             $egressosData = $this->usuarios->getAlunoByCurso($requestCursos[$curso]);
             // Proteger os nomes dos usuários e criar o array $egressosFormatados
@@ -43,19 +44,33 @@ class CursosController extends Controller
             }
 
             $this->dadosPagina['curso'] = array_search($requestCursos[$curso], $rightCursos);
+            $this->dadosPagina['cursoCode'] = $requestCursos[$curso];
+
             $this->dadosPagina['egressos'] = $egressosFormatados;
         }
-    
+
+        $this->dadosPagina['highUser'] = false;
+
+        if(Auth::check()){
+            $userType = Auth::user()->type;
+            if(isset($userType)){
+                if($userType == '0' || $userType = 1){
+                    $this->dadosPagina['highUser'] = true;
+                }
+            }
+        }
+
+
         return view(self::VIEW, $this->dadosPagina);
     }
-    
+
     // Função para proteger o nome dos usuários
     private function protegerNome($nome){
         $primeiraLetra = substr($nome, 0, 1);
         $tamanhoNome = strlen($nome);
         $restoNome = str_repeat('*', $tamanhoNome - 1);
-    
+
         return $primeiraLetra . $restoNome;
     }
-    
+
 }

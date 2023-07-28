@@ -10,6 +10,11 @@
 <body>
     @include('inc/header')
     <div class="area-site">
+        <div class="breadcrumbs">
+            <span> <a href="{{url('')}}" class="back-home">Home</a></span>
+            <img src="{{asset('images/chavron-right.svg')}}" alt="" width="7px" height="10px">
+            <span>{{$curso}}</span>
+        </div>
         <div class="title-home">
             <h1 class="home-h1">Egressos do curso {{$curso}}</h1>
             <hr class="dotted-line">
@@ -19,7 +24,9 @@
                 <div id="lista-usuarios" class="single-egresso">
                     <span class="egresso-name">{{$egresso->name}}</span>
                     <span class="egress-year">egresso em: {{$egresso->ano_egresso}}</span>
-                    <span class="egresso-more"> . . . </span>
+                    @if(isset($highUser) && $highUser == true)
+                        <span class="egresso-more"> . . . </span>
+                    @endif
                 </div>
             @endforeach
             <a href="{{url('/')}}/cursos/graficos" class="generate-graph">
@@ -32,12 +39,5 @@
 </body>
 <script>
     var page = 'curso';
-    const nomes = document.querySelectorAll('.egresso-name');
-    for (let i = 0; i < nomes.length; i++) {
-      const nomeCompleto = nomes[i].textContent;
-      const primeiraLetra = nomeCompleto.charAt(0);
-      const nomeProtegido = primeiraLetra + '*'.repeat(nomeCompleto.length - 1);
-      nomes[i].textContent = nomeProtegido;
-    }
-  </script>
+</script>
 </html>

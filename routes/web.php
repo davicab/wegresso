@@ -4,6 +4,7 @@ use App\Http\Controllers\CursosController;
 use App\Http\Controllers\GraficosController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\PerfilController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
+
+Route::get('/perfil', [PerfilController:: class, 'index']);
+
+Route::post('/salvar-perfil', 'PerfilController@salvarPerfil')->name('salvar-perfil');
+
 
 Route::get('/', [HomeController::class, 'index']);
 

@@ -9,13 +9,11 @@
         "@popperjs/core": "^2.11.6",
         "autoprefixer": "^10.4.14",
         "axios": "^1.1.2",
-        "bootstrap": "^5.2.3",
         "gulp": "^4.0.2",
         "gulp-cssmin": "^0.2.0",
         "gulp-uglify": "^3.0.2",
         "gulp-watch": "^5.0.1",
         "laravel-vite-plugin": "^0.7.5",
-        "sass": "^1.56.1",
         "vite": "^4.4.7"
     },
     "name": "wegresso",

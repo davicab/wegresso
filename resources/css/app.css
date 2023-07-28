@@ -347,3 +347,108 @@ footer{
 .custom-link:hover {
     text-decoration: underline;
 }
+.select-course{
+    width: 80%;
+    height: auto;
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+}
+
+.label-container {
+    display: flex;
+    height: 25px;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.label-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    transition: 0.3s;
+    border-radius: 7px;
+    border: 1px solid #cecece;
+}
+
+.label-container:hover input ~ .checkmark {
+    background-color: #72ce82;
+}
+
+.label-container input:checked ~ .checkmark {
+    background-color: #17882C;
+    border: 1px solid #17882C;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.label-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.label-container .checkmark:after {
+    left: 8px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.chart-box{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.go-back{
+    margin-top: 15px;
+    display: flex;
+    cursor: pointer;
+    width: 100px;
+    background-color: #FFF;
+    border: 2px solid #17882C;
+    border-radius: 20px;
+}
+.go-back span{
+    margin: auto;
+    color: grey;
+    margin-left: 5px;
+    font-size: 14px;
+}
+.breadcrumbs{
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding-left: 40px;
+    gap: 10px;
+}
+.back-home{
+    color: #17882C;
+}
