@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent;
+use App\Models\User;
 
 class PerfilController extends Controller
 {
@@ -43,15 +44,12 @@ class PerfilController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->type == 2) {
-            $user->curso = $request->input('curso');
-            $user->is_employed = $request->input('empregado') ? true : false;
-            $user->ano_egresso = $request->input('ano_egresso');
-            $user->ano_ingresso = $request->input('ano_ingresso');
-        }
-
-        // Salva as alterações no banco de dados
-        // $user->save();
+        // if ($user->type == 2) {
+        //     $user->curso = $request->input('curso');
+        //     $user->is_employed = $request->input('empregado') ? true : false;
+        //     $user->ano_egresso = $request->input('ano_egresso');
+        //     $user->ano_ingresso = $request->input('ano_ingresso');
+        // }
 
         // Redireciona o usuário para a página de perfil novamente
         return redirect()->route('perfil');

@@ -10,7 +10,8 @@
 <body>
     @include('inc/header')
     <div class="area-site">
-        {{-- {{dd($user)}} --}}
+
+        {{dd($curso , $empregado, $ano_egresso, $ano_ingresso)}}
     </div>
     @include('inc/footer')
 </body>

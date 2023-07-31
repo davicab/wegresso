@@ -23,7 +23,7 @@ Auth::routes();
 
 Route::get('/perfil', [PerfilController:: class, 'index']);
 
-Route::post('/salvar-perfil', 'PerfilController@salvarPerfil')->name('salvar-perfil');
+// Route::post('/salvar-perfil', 'PerfilController@salvarPerfil')->name('salvar-perfil');
 
 
 Route::get('/', [HomeController::class, 'index']);
