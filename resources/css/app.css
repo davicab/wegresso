@@ -452,3 +452,82 @@ footer{
 .back-home{
     color: #17882C;
 }
+.form-box{
+    background-color: #FFF;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.perfil-form {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.perfil-form input,
+.perfil-form select,
+.perfil-form textarea {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+  
+.perfil-form label {
+    font-weight: bold;
+}
+
+.perfil-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23000000' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath d='M2.646 5.646a.5.5 0 0 1 .708 0L8 10.293l4.646-4.647a.5.5 0 1 1 .708.708l-5 5a.5.5 0 0 1-.708 0l-5-5a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+}
+  
+.perfil-form textarea {
+    resize: vertical;
+}
+.half-box{
+    width: calc(50% - 15px);
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+}
+.perfil-form input:read-only {
+    background-color: #cecece;
+    outline: none;
+}
+.sm-box{
+    width: calc(25% - 15px);
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+}
+.full-box{
+    width: 100%;
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+}
+.update-user{
+    width: 150px;    
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #17882C;
+    font-weight: 900;
+    transition: 0.3s;
+    margin: auto;
+}
+.update-user:hover {
+    background-color: #00510F;
+}
+  

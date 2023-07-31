@@ -20,11 +20,13 @@ class UserSeeder extends Seeder
           'name' => Str::random(10),
           'email' => Str::random(10).'@gmail.com',
           'password' => Hash::make('password'),
-          'type' => '2', // tipo do usuario
+          'type' => '2',
+          'permite_dados' => '1',  // tipo do usuario
           'is_employed' => random_int(0, 1),
           'ano_ingresso' => random_int(2017, 2022),
           'ano_egresso' => random_int(2023, 2029),
           'curso'  => random_int(0, 2),
+          'status' => '0',
         ]);
       }
     }

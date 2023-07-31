@@ -15,9 +15,13 @@ return new class extends Migration
             $table->integer('curso')->nullable();
             $table->string('password');
             $table->integer('type')->nullable();
+            $table->integer('permite_dados')->nullable();
             $table->integer('is_employed')->nullable();
             $table->integer('ano_ingresso')->nullable();
             $table->integer('ano_egresso')->nullable();
+            $table->string('atual_emprego')->nullable();
+            $table->string('experiencias')->nullable();
+            $table->integer('status')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('reset_password_token_expires_at')->nullable();
             $table->rememberToken()->nullable();

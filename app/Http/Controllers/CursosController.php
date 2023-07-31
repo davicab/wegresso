@@ -20,6 +20,14 @@ class CursosController extends Controller
     }
 
     public function index(Request $request, $curso){
+        $auth = Auth::check();
+        $authUser = Auth::user();
+        $canSee = false;
+
+        if($auth && $authUser->type != 2){
+            $canSee = true;
+        }
+
         $requestCursos = [
             'computacao' => 0,
             'eletrica' => 1,
@@ -38,7 +46,11 @@ class CursosController extends Controller
             $egressosFormatados = [];
             foreach ($egressosData as $egressoData) {
                 $egresso = new stdClass();
-                $egresso->name = $this->protegerNome($egressoData->name);
+                if($canSee == true){
+                    $egresso->name = $egressoData->name;
+                }else{
+                    $egresso->name = $this->protegerNome($egressoData->name);
+                }
                 $egresso->ano_egresso = $egressoData->ano_egresso;
                 $egressosFormatados[] = $egresso;
             }
@@ -51,12 +63,12 @@ class CursosController extends Controller
 
         $this->dadosPagina['highUser'] = false;
 
+        $this->dadosPagina['auth'] = Auth::check();
+
         if(Auth::check()){
             $userType = Auth::user()->type;
-            if(isset($userType)){
-                if($userType == '0' || $userType = 1){
-                    $this->dadosPagina['highUser'] = true;
-                }
+            if($userType == '0' || $userType = 1){
+                $this->dadosPagina['highUser'] = true;
             }
         }
 

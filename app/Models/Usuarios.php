@@ -17,7 +17,8 @@ class Usuarios extends Model
     protected $fillable = [
         'remember_token',
         'password',
-        'email_verified_at'
+        'email_verified_at',
+        'status'
     ];
 
     // Usuarios type = 0 -- Root
@@ -28,10 +29,14 @@ class Usuarios extends Model
     // Curso = 1 -- Eletrica
     // Curso = 2 -- Civil
 
+    // status = 0 -- dados não verificados
+    // status = 1 -- dados verificados
+
     public function getAlunos(){
         $dados = DB::table($this->table)
             ->select('id', 'name', 'ano_egresso')
             ->where('type', '2')
+            ->where('permite_dados', '1')
             ->orderBy('name', 'asc')
             ->get();
         return $dados;
@@ -40,6 +45,7 @@ class Usuarios extends Model
     public function getAnosEgresso(){
         $dados = DB::table($this->table)
             ->where('type', '2')
+            ->where('permite_dados', '1')
             ->distinct()
             ->orderByRaw('CAST(ano_egresso AS UNSIGNED)')
             ->pluck('ano_egresso');
@@ -50,6 +56,7 @@ class Usuarios extends Model
     public function getAlunosAgrupadosPorAnoEgresso(){
         $dados = DB::table($this->table)
             ->where('type', '2')
+            ->where('permite_dados', '1')
             ->selectRaw('ano_egresso, COUNT(*) as count')
             ->groupBy('ano_egresso')
             ->orderBy('ano_egresso', 'asc')
@@ -60,6 +67,7 @@ class Usuarios extends Model
     public function getAlunosComputacao(){
         $dados = DB::table($this->table)
             ->where('curso', '0')
+            ->where('permite_dados', '1')
             ->select('ano_egresso', 'ano_ingresso')
             ->get();
         return $dados;
@@ -68,6 +76,7 @@ class Usuarios extends Model
     public function getAlunosEletrica(){
         $dados = DB::table($this->table)
             ->where('curso', '1')
+            ->where('permite_dados', '1')
             ->select('ano_egresso', 'ano_ingresso')
             ->get();
         return $dados;
@@ -76,16 +85,18 @@ class Usuarios extends Model
     public function getAlunosCivil(){
         $dados = DB::table($this->table)
             ->where('curso', '2')
+            ->where('permite_dados', '1')
             ->select('ano_egresso', 'ano_ingresso')
             ->get();
         return $dados;
     }
 
-    public function getUserByEmail($email){
+    public function getUserById($id){
         $dados = DB::table($this->table)
-            ->select('*')
-            ->where('email', $email)
+            ->select('id', 'name', 'email', 'curso', 'is_employed', 'ano_egresso', 'ano_ingresso')
             ->where('type', '2')
+            ->where('permite_dados', '1')
+            ->where('id', $id)
             ->first();
         return $dados;
     }
@@ -110,6 +121,7 @@ class Usuarios extends Model
             ->select('ano_egresso')
             ->selectRaw('SUM(CASE WHEN is_employed = 1 THEN 1 ELSE 0 END) as empregados')
             ->where('is_employed', '1')
+            ->where('permite_dados', '1')
             ->groupBy('ano_egresso')
             ->orderBy('ano_egresso', 'asc')
             ->get();
@@ -121,6 +133,7 @@ class Usuarios extends Model
             ->select('name', 'ano_egresso')
             ->where('curso', $curso)
             ->where('type', '2')
+            ->where('permite_dados', '1')
             ->orderBy('ano_egresso', 'asc')
             ->get();
         return $dados;
@@ -131,6 +144,7 @@ class Usuarios extends Model
             ->selectRaw('ano_egresso, COUNT(*) as count')
             ->where('curso', $curso)
             ->where('type', '2')
+            ->where('permite_dados', '1')
             ->groupBy('ano_egresso')
             ->orderBy('ano_egresso', 'asc')
             ->get();
@@ -142,11 +156,22 @@ class Usuarios extends Model
             ->select('ano_egresso')
             ->selectRaw('SUM(CASE WHEN is_employed = 1 THEN 1 ELSE 0 END) as empregados')
             ->where('is_employed', '1')
+            ->where('permite_dados', '1')
             ->where('curso', $curso)
             ->groupBy('ano_egresso')
             ->orderBy('ano_egresso', 'asc')
             ->get();
         return $dados;
+    }
+
+    public function getDadosAlunos(){
+        $dados = DB::table($this->table)
+        ->select('id','name','atual_emprego', 'experiencias')
+        ->where('is_employed', '1')
+        ->where('status', '0')
+        ->orderBy('ano_egresso', 'asc')
+        ->get();
+    return $dados;
     }
 
 }

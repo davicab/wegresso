@@ -57,6 +57,8 @@ class HomeController extends Controller
         $this->dadosPagina['dadosGraficoStack'] = $dadosGraficoStack;
         $this->dadosPagina['dadosGraficoBars'] = $dadosGraficoBars;
 
+        $this->dadosPagina['auth'] = Auth::check();
+
         return view(self::VIEW, $this->dadosPagina);
     }
 }

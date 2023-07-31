@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuarios;
+use Illuminate\Support\Facades\Auth;
 
 class GraficosController extends Controller
 {
@@ -97,6 +98,8 @@ class GraficosController extends Controller
         $this->dadosPagina['dadosGraficoComp'] = $dadosGraficoComp;
         $this->dadosPagina['dadosGraficoEletr'] = $dadosGraficoEletr;
         $this->dadosPagina['dadosGraficoCivil'] = $dadosGraficoCivil;
+
+        $this->dadosPagina['auth'] = Auth::check();
 
         return view(self::VIEW, $this->dadosPagina);
     }

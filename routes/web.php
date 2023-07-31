@@ -5,6 +5,8 @@ use App\Http\Controllers\GraficosController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\VerifyDataController;
+use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,10 +23,13 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('/painel-administração', [VerifyDataController:: class, 'index']);
+
+Route::put('/validar-dados', [VerifyDataController:: class, 'validarDados']);
+
 Route::get('/perfil', [PerfilController:: class, 'index']);
 
-// Route::post('/salvar-perfil', 'PerfilController@salvarPerfil')->name('salvar-perfil');
-
+Route::put('/salvar-perfil/{id}', [PerfilController:: class, 'salvarPerfil']);
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -32,9 +37,9 @@ Route::get('/{curso}', [CursosController::class, 'index']);
 
 Route::get('/cursos/graficos', [GraficosController:: class, 'index']);
 
-Route::get('/register', function () {
-    return redirect()->to(config('app.url').'/', 301);
-});
+// Route::get('/register', function () {
+//     return redirect()->to(config('app.url').'/', 301);
+// });
 Route::get('/logout', function () {
     return redirect()->to(config('app.url').'/', 301);
 });
