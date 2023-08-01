@@ -9,7 +9,7 @@ Passo a passo de como instalar o projeto, configurar dominio e rodar a aplica√ß√
 # Iniciar Projeto - 
 
 # 1 - clone esse repositorio na pasta workspace/www (workspace docker criado anteriormente)
-# 2 - na raiz da pasta wegresso, crie um arquivo chamado .env e cole o conteudo do seguinte arquivo : https://drive.google.com/file/d/1ywVib_JwYIUH0OR29QY6vsHYlkfz4wZD/view?usp=sharing
+# 2 - na raiz da pasta wegresso, crie um arquivo chamado .env e cole o conteudo do seguinte arquivo : https://drive.google.com/file/d/177bgtW9Plqmq5MKt8jkfzaTGw5NpxBga/view?usp=sharing
 
 # 3 - via terminarl : 
     #iniciando todos os containers
@@ -41,3 +41,7 @@ Passo a passo de como instalar o projeto, configurar dominio e rodar a aplica√ß√
     - CTRL + o (salvar o arquivo)
     - ENTER
     - CTRl + X
+# Liberando permiss√µes para alterar arquivos do projeto
+    - cd workspace/projects/www/wegresso
+    - sudo chmod 775 bootstrap/ &&\chmod 775 bootstrap/cache/ &&\chmod 775 storage/logs/ &&\chmod 775 storage/framework/views/ &&\chmod 775 storage/framework/testing/  &&\chmod 775 storage/framework/cache/
+    - sudo chmod -R ugo+rw storage
