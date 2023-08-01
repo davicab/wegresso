@@ -36,7 +36,7 @@ class PerfilController extends Controller
         ];
 
         if($userType != '2'){
-            return redirect('/painel-administração');
+            return redirect('/painel-administracao');
         }else{
             $this->dadosPagina['user'] = 'aluno';
             $this->dadosPagina['id'] = $userId;

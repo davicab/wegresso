@@ -8,26 +8,25 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 </head>
 <body>
-    @include('inc/header')
+    {{-- @include('inc/header') --}}
     <div class="area-site">
         <div class="title-home">
             <h1 class="home-h1">Painel de administração</h1>
             <hr class="dotted-line">
         </div>
         <div class="form-box">
-            <form method="POST" action="{{ url('/') }}/validar-dados">
-                @method('PUT')
-                @csrf 
+            @if(!$nao_verificados->isNotEmpty())
+                <span>Sem dados de usuários para serem validados</span>
+            @else
                 @foreach($nao_verificados as $aluno)
-                    <input id="{{$loop->iteration}}" value="{{$aluno->id}}" type="checkbox">{{$aluno->name}}
+                    <a class="single-user" id="{{$aluno->id}}" href="{{url('/')}}/validar-egresso/{{$aluno->id}}">{{$aluno->name}}
                 @endforeach
-                <button type="submit"></button>
-            </form>
+            @endif
             {{-- {{$nao_verificados}} --}}
         </div>
         {{-- {{dd($curso , $empregado, $ano_egresso, $ano_ingresso)}} --}}
     </div>
-    @include('inc/footer')
+    {{-- @include('inc/footer') --}}
 </body>
 <script>
     var page = 'verificar';

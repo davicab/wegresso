@@ -23,9 +23,11 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/painel-administração', [VerifyDataController:: class, 'index']);
+Route::get('/painel-administracao', [VerifyDataController:: class, 'index']);
 
-Route::put('/validar-dados', [VerifyDataController:: class, 'validarDados']);
+Route::get('/validar-egresso/{id}', [VerifyDataController:: class, 'userVerfiyView']);
+
+Route::put('/validar-dados/{id}', [VerifyDataController:: class, 'validarDados']);
 
 Route::get('/perfil', [PerfilController:: class, 'index']);
 

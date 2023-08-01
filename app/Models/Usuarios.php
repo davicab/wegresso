@@ -93,10 +93,9 @@ class Usuarios extends Model
 
     public function getUserById($id){
         $dados = DB::table($this->table)
-            ->select('id', 'name', 'email', 'curso', 'is_employed', 'ano_egresso', 'ano_ingresso')
-            ->where('type', '2')
-            ->where('permite_dados', '1')
+            ->select('id', 'name', 'curso', 'is_employed', 'ano_egresso', 'ano_ingresso', 'status', 'experiencias', 'atual_emprego')
             ->where('id', $id)
+            ->where('type', '2')
             ->first();
         return $dados;
     }
@@ -166,9 +165,10 @@ class Usuarios extends Model
 
     public function getDadosAlunos(){
         $dados = DB::table($this->table)
-        ->select('id','name','atual_emprego', 'experiencias')
+        ->select('id','name')
         ->where('is_employed', '1')
         ->where('status', '0')
+        ->whereNotNull('experiencias')
         ->orderBy('ano_egresso', 'asc')
         ->get();
     return $dados;

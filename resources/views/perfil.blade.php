@@ -57,7 +57,6 @@
                 
                     <button class="update-user" type="submit">Salvar</button>
                 </form>
-                
             @endif
         </div>
         {{-- {{dd($curso , $empregado, $ano_egresso, $ano_ingresso)}} --}}
