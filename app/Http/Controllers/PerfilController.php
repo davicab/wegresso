@@ -27,12 +27,12 @@ class PerfilController extends Controller
 
         $userType = Auth::user()->type;
         $userId = Auth::user()->id;
-        $userCurso = Auth::user()->curso;
+        $userCurso = Auth::user()->curso_id;
 
         $rightCursos = [
-            0 => 'Engenharia de Computação',
-            1 => 'Engenharia Elétrica',
-            2 =>'Engenharia Civil' ,
+            1 => 'Engenharia de Computação',
+            2 => 'Engenharia Elétrica',
+            3 =>'Engenharia Civil' ,
         ];
 
         if($userType != '2'){
@@ -73,7 +73,7 @@ class PerfilController extends Controller
 
 
         $this->validate($request, [
-            'curso' => 'required|max:200',
+            'curso_id' => 'required|max:200',
             'ano_ingresso' => 'required|date_format:Y',      
             'ano_egresso' => 'required|date_format:Y',
             'is_employed' => 'nullable|max:1',

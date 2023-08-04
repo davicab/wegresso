@@ -9,6 +9,14 @@
 </head>
 <body>
     @include('inc/header')
+
+    <div>
+        @foreach ($alunos as $item)
+            <ul>
+                {{-- <li>{{$item->name}} | {{$cursos[$item->curso_id - 1]->nome}}</li> --}}
+            </ul>
+        @endforeach
+    </div>
     <div class="area-site">
         <div class="title-home">
             <h1 class="home-h1">Relatório consolidado de cursos</h1>

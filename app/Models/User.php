@@ -21,10 +21,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'curso',
+        'curso_id',
         'is_employed',
         'ano_ingresso',
-        'ano_egresso'
+        'ano_egresso',  
+        'status',
+        'permite_dados',
+        'type',
     ];
 
     /**

@@ -25,9 +25,13 @@ Auth::routes();
 
 Route::get('/painel-administracao', [VerifyDataController:: class, 'index']);
 
+Route::put('/import-data', [VerifyDataController:: class, 'importData']);
+
 Route::get('/validar-egresso/{id}', [VerifyDataController:: class, 'userVerfiyView']);
 
 Route::put('/validar-dados/{id}', [VerifyDataController:: class, 'validarDados']);
+
+Route::put('/create-curso', [VerifyDataController:: class, 'createCurso']);
 
 Route::get('/perfil', [PerfilController:: class, 'index']);
 

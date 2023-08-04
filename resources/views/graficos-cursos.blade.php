@@ -15,7 +15,7 @@
             <img src="{{asset('images/chavron-right.svg')}}" alt="" width="7px" height="10px">
             <span>Graficos</span>
         </div>
-        {{-- {{dd(json_decode($dadosGraficoComp))}} --}}
+        {{dd($dadosGrafico)}}
         <div class="title-home">
             <h1 class="home-h1">Egressos do curso </h1>
             <hr class="dotted-line">

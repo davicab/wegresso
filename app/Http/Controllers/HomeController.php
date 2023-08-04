@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cursos;
 use Illuminate\Http\Request;
 use App\Models\Usuarios;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,19 +12,39 @@ class HomeController extends Controller
 {
     private $usuarios;
     private $dadosPagina;
+    private $cursos;
 
     const VIEW = 'index';
 
     public function __construct() {
         $this->usuarios = new Usuarios();
+        $this->cursos = new Cursos();
         $this->dadosPagina = array();
     }
 
     public function index(){
 
+        $allAlunos = $this->usuarios->getAlunos();
+        $allCursos = $this->cursos->getCursos();
+
+        $countCurso = count($allCursos);
+
+        $usariosPorCurso = $this->usuarios->getAlunosPorCurso();
+
+        $arrCurso = [];
+        $arrAluno = [];
+        for($i = 0; $i < count($allCursos); $i ++){
+            $arrCurso[$i] = $allCursos[$i]->descricao;
+            if($usariosPorCurso[$i]){
+                $arrAluno[$i] = $usariosPorCurso[$i]->total_alunos;
+            }
+        }
+
         $contagemPorAno = $this->usuarios->getAlunosAgrupadosPorAnoEgresso();
 
         $contagemGeralPorAno = $this->usuarios->getAlunosAgrupadosGeralPorAno();
+
+        // dd($contagemGeralPorAno);
 
         $alunosEmpregados = $this->usuarios->getAlunosEmpregados();
 
@@ -32,14 +53,16 @@ class HomeController extends Controller
         $alunosCivil = $this->usuarios->getAlunosCivil();
 
         $dadosGraficoPie = json_encode([
-            'labels' => ['Engenharia de Computação', 'Engenharia Elétrica', 'Engenharia Civil'],
-            'data' => [count($alunosComputação), count($alunosEletrica), count($alunosCivil)]
+            'labels' => $arrCurso,
+            'data' => $arrAluno
         ]);
 
         $dadosGraficoStack = json_encode([
-            'labels' => ['Engenharia de Computação', 'Engenharia Elétrica', 'Engenharia Civil'],
+            'labels' => $arrCurso,
             'data' => $contagemGeralPorAno,
         ]);
+
+        // dd($arrCurso);
 
         // Converte os resultados em um formato que pode ser facilmente lido pelo JavaScript (JSON)
         $dadosGrafico = json_encode([
@@ -56,6 +79,8 @@ class HomeController extends Controller
         $this->dadosPagina['dadosGraficoPie'] = $dadosGraficoPie;
         $this->dadosPagina['dadosGraficoStack'] = $dadosGraficoStack;
         $this->dadosPagina['dadosGraficoBars'] = $dadosGraficoBars;
+        $this->dadosPagina['alunos'] = $allAlunos;
+        $this->dadosPagina['cursos'] = Cursos::all();
 
         $this->dadosPagina['auth'] = Auth::check();
 

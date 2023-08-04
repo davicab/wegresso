@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cursos;
 use Illuminate\Http\Request;
 use App\Models\Usuarios;
 use Illuminate\Support\Facades\Auth;
@@ -20,9 +21,9 @@ class GraficosController extends Controller
 
     public function index(){
 
-        $empregadosComp = $this->usuarios->getAlunosEmpregadosCurso(0);
-        $empregadosEletr = $this->usuarios->getAlunosEmpregadosCurso(1);
-        $empregadosCivil = $this->usuarios->getAlunosEmpregadosCurso(2);
+        $empregadosComp = $this->usuarios->getAlunosEmpregadosCurso(1);
+        $empregadosEletr = $this->usuarios->getAlunosEmpregadosCurso(2);
+        $empregadosCivil = $this->usuarios->getAlunosEmpregadosCurso(3);
 
         $alunosComp = $this->usuarios->getAlunosComputacao();
         $alunosEletr = $this->usuarios->getAlunosEletrica();
@@ -46,56 +47,58 @@ class GraficosController extends Controller
         $mediaTempoComp = calcularMediaFormatura($alunosComp);
         $mediaTempoEletr = calcularMediaFormatura($alunosEletr);
         $mediaTempoCivil = calcularMediaFormatura($alunosCivil);
-
-        $alunosGeral = $this->usuarios->getAlunosAgrupadosGeralPorAno();
-        $dadosGraficoComp = [];
-        $dadosGraficoEletr = [];
-        $dadosGraficoCivil = [];
         
-        foreach ($alunosGeral as $aluno) {
-            $ano_egresso = $aluno->ano_egresso;
-            $curso0 = $aluno->curso0;
-            $curso1 = $aluno->curso1;
-            $curso2 = $aluno->curso2;
+        $alunosPorCursos = Cursos::getQuantidadeAlunoPorCurso();
+        $nomeCurso = [];
+        $dadosGraficos = [];
         
-            $dadosGraficoComp[] = [
+        foreach ($alunosPorCursos as $result) {
+            $ano_egresso = $result->ano_egresso;
+            $curso_id = $result->id;
+            $nomeCurso[$curso_id] = $result->descricao;
+            $count = $result->count;
+        
+            if (!isset($dadosGraficos[$curso_id])) {
+                $dadosGraficos[$curso_id] = [
+                    'labels' => $nomeCurso[$curso_id],
+                    'data' => [],
+                ];
+            }
+        
+            $dadosGraficos[$curso_id]['data'][] = [
                 'ano_egresso' => $ano_egresso,
-                'curso' => $curso0,
-            ];
-        
-            $dadosGraficoEletr[] = [
-                'ano_egresso' => $ano_egresso,
-                'curso' => $curso1,
-            ];
-        
-            $dadosGraficoCivil[] = [
-                'ano_egresso' => $ano_egresso,
-                'curso' => $curso2,
+                'quantidade' => $count,
             ];
         }
         
+        // Montar os dados para a view
+        $dadosParaView = [
+            'dadosGraficos' => $dadosGraficos,
+        ];
+        
+        
         $dadosGraficoComp = json_encode([
             'labels' => ['Engenharia de Computação'],
-            'data' => $dadosGraficoComp,
+            // 'data' => $dadosGraficoComp,
             'empregados' => $empregadosComp,
             'mediaFormatura' => $mediaTempoComp,
         ]);
         
         $dadosGraficoEletr = json_encode([
             'labels' => ['Engenharia Elétrica'],
-            'data' => $dadosGraficoEletr,
+            // 'data' => $dadosGraficoEletr,
             'empregados' => $empregadosEletr,
             'mediaFormatura' => $mediaTempoEletr,
         ]);
         
         $dadosGraficoCivil = json_encode([
             'labels' => ['Engenharia Civil'],
-            'data' => $dadosGraficoCivil,
+            // 'data' => $dadosGraficoCivil,
             'empregados' => $empregadosCivil,
             'mediaFormatura' => $mediaTempoCivil,
         ]);
         
-        $this->dadosPagina['dadosGraficoComp'] = $dadosGraficoComp;
+        $this->dadosPagina['dadosGrafico'] = $dadosParaView;
         $this->dadosPagina['dadosGraficoEletr'] = $dadosGraficoEletr;
         $this->dadosPagina['dadosGraficoCivil'] = $dadosGraficoCivil;
 

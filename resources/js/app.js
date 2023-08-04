@@ -110,25 +110,51 @@ function createChart3(){
 
   // Faz o parsing do JSON para obter os dados
   const data = JSON.parse(jsonString);
+  console.log(data)
+
+  const keysObj = {};
+
+  // Percorre a array data.data
+  data.data.forEach(item => {
+    // Itera sobre as chaves do objeto (exceto "ano_egresso")
+    for (const key in item) {
+      if (key !== "ano_egresso") {
+        // Armazena a chave no objeto keysObj
+        keysObj[key] = true;
+      }
+    }
+  });
+  
+  // Obtém um array contendo todas as chaves do objeto keysObj
+  const keysArray = Object.keys(keysObj);
+  
+  console.log(keysArray);
 
   const ctx = document.getElementById('chart-3').getContext('2d');
   new Chart(ctx, {
     type: 'bar',
     data: {
       labels: data.data.map(entry => entry.ano_egresso),
-      datasets: [{
-        label: data.labels[0],
-        data: data.data.map(entry => entry.curso0),
-        backgroundColor: 'rgba(255, 99, 132, 0.5)'
-      }, {
-        label: data.labels[1],
-        data: data.data.map(entry => entry.curso1),
-        backgroundColor: 'rgba(54, 162, 235, 0.5)'
-      }, {
-        label: data.labels[2],
-        data: data.data.map(entry => entry.curso2),
-        backgroundColor: 'rgba(255, 206, 86, 0.5)'
-      }]
+
+      datasets : keysArray.map((key, index) => ({
+        label: data.labels[index],
+        data: data.data.map(entry => entry[key]),
+        backgroundColor: getRandomColor()
+      }))
+      // datasets: [
+      // {
+      //   label: data.labels[0],
+      //   data: data.data.map(entry => entry.curso1),
+      //   backgroundColor: 'rgba(255, 99, 132, 0.5)'
+      // }, {
+      //   label: data.labels[1],
+      //   data: data.data.map(entry => entry.curso2),
+      //   backgroundColor: 'rgba(54, 162, 235, 0.5)'
+      // }, {
+      //   label: data.labels[2],
+      //   data: data.data.map(entry => entry.curso3),
+      //   backgroundColor: 'rgba(255, 206, 86, 0.5)'
+      // }]
     },
     options: {
       responsive: true,
@@ -150,6 +176,15 @@ function createChart3(){
       }
     }
   });
+}
+
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }
 //criacao do grafico "bars"
 function createChart4(){

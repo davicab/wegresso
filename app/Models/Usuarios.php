@@ -5,7 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\Cursos;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 
 class Usuarios extends Model
 {
@@ -18,8 +21,16 @@ class Usuarios extends Model
         'remember_token',
         'password',
         'email_verified_at',
-        'status'
+        'status',
+        'permite_dados',
+        'type',
+        
     ];
+
+    // public function curso(): BelongsTo
+    // {
+    //     return $this->belongsTo(Cursos::class, 'curso_id');
+    // }
 
     // Usuarios type = 0 -- Root
     // Usuarios type = 1 -- Administradores
@@ -34,12 +45,23 @@ class Usuarios extends Model
 
     public function getAlunos(){
         $dados = DB::table($this->table)
-            ->select('id', 'name', 'ano_egresso')
+            ->select('id', 'name', 'ano_egresso', 'curso_id')
             ->where('type', '2')
             ->where('permite_dados', '1')
             ->orderBy('name', 'asc')
             ->get();
         return $dados;
+    }
+
+    public function getAlunosPorCurso()
+    {
+        $alunosPorCurso = DB::table('users')
+            ->select('curso_id', DB::raw('COUNT(*) as total_alunos'))
+            ->where('type', '2')
+            ->groupBy('curso_id')
+            ->get();
+
+        return $alunosPorCurso;
     }
 
     public function getAnosEgresso(){
@@ -66,7 +88,7 @@ class Usuarios extends Model
 
     public function getAlunosComputacao(){
         $dados = DB::table($this->table)
-            ->where('curso', '0')
+            ->where('curso_id', '1')
             ->where('permite_dados', '1')
             ->select('ano_egresso', 'ano_ingresso')
             ->get();
@@ -75,7 +97,7 @@ class Usuarios extends Model
 
     public function getAlunosEletrica(){
         $dados = DB::table($this->table)
-            ->where('curso', '1')
+            ->where('curso_id', '2')
             ->where('permite_dados', '1')
             ->select('ano_egresso', 'ano_ingresso')
             ->get();
@@ -84,7 +106,7 @@ class Usuarios extends Model
 
     public function getAlunosCivil(){
         $dados = DB::table($this->table)
-            ->where('curso', '2')
+            ->where('curso_id', '3')
             ->where('permite_dados', '1')
             ->select('ano_egresso', 'ano_ingresso')
             ->get();
@@ -93,27 +115,50 @@ class Usuarios extends Model
 
     public function getUserById($id){
         $dados = DB::table($this->table)
-            ->select('id', 'name', 'curso', 'is_employed', 'ano_egresso', 'ano_ingresso', 'status', 'experiencias', 'atual_emprego')
+            ->select('id', 'name', 'curso_id', 'is_employed', 'ano_egresso', 'ano_ingresso', 'status', 'experiencias', 'atual_emprego')
             ->where('id', $id)
             ->where('type', '2')
             ->first();
         return $dados;
     }
 
-    public function getAlunosAgrupadosGeralPorAno(){
-        $dados = DB::table($this->table)
-            ->select('ano_egresso')
-            ->selectRaw('
-                SUM(CASE WHEN curso = 0 THEN 1 ELSE 0 END) as curso0,
-                SUM(CASE WHEN curso = 1 THEN 1 ELSE 0 END) as curso1,
-                SUM(CASE WHEN curso = 2 THEN 1 ELSE 0 END) as curso2
-            ')
-            ->groupBy('ano_egresso')
-            ->orderBy('ano_egresso', 'asc')
-            ->get();
-
-        return $dados;
-    }
+    // public function getAlunosAgrupadosGeralPorAno(){
+    //     $dados = DB::table($this->table)
+    //         ->select('ano_egresso')
+    //         ->selectRaw('
+    //             SUM(CASE WHEN curso = 0 THEN 1 ELSE 0 END) as curso0,
+    //             SUM(CASE WHEN curso = 1 THEN 1 ELSE 0 END) as curso1,
+    //             SUM(CASE WHEN curso = 2 THEN 1 ELSE 0 END) as curso2
+    //         ')
+    //         ->groupBy('ano_egresso')
+    //         ->orderBy('ano_egresso', 'asc')
+    //         ->get();
+    
+    //     $dados = [];
+    
+    //     foreach ($anos as $ano) {
+    //         $cursoCounts = DB::table($this->table)
+    //             ->select('curso_id', DB::raw('COUNT(*) as count'))
+    //             ->where('ano_egresso', $ano->ano_egresso)
+    //             ->groupBy('curso_id')
+    //             ->get();
+    
+    //         $dadosAno = [
+    //             'ano_egresso' => $ano->ano_egresso,
+    //         ];
+    
+    //         foreach ($cursoCounts as $cursoCount) {
+    //             $curso = "curso{$cursoCount->curso_id}";
+    //             $dadosAno[$curso] = (string) $cursoCount->count;
+    //         }
+    
+    //         $dados[] = $dadosAno;
+    //     }
+    
+    //     return $dados;
+    // }
+    
+    
 
     public function getAlunosEmpregados(){
         $dados = DB::table($this->table)
@@ -130,7 +175,7 @@ class Usuarios extends Model
     public function getAlunoByCurso($curso){
         $dados = DB::table($this->table)
             ->select('name', 'ano_egresso')
-            ->where('curso', $curso)
+            ->where('curso_id', $curso)
             ->where('type', '2')
             ->where('permite_dados', '1')
             ->orderBy('ano_egresso', 'asc')
@@ -141,7 +186,7 @@ class Usuarios extends Model
     public function getCountAlunosByCurso($curso){
         $dados = DB::table($this->table)
             ->selectRaw('ano_egresso, COUNT(*) as count')
-            ->where('curso', $curso)
+            ->where('curso_id', $curso)
             ->where('type', '2')
             ->where('permite_dados', '1')
             ->groupBy('ano_egresso')
@@ -156,7 +201,7 @@ class Usuarios extends Model
             ->selectRaw('SUM(CASE WHEN is_employed = 1 THEN 1 ELSE 0 END) as empregados')
             ->where('is_employed', '1')
             ->where('permite_dados', '1')
-            ->where('curso', $curso)
+            ->where('curso_id', $curso)
             ->groupBy('ano_egresso')
             ->orderBy('ano_egresso', 'asc')
             ->get();
@@ -173,5 +218,13 @@ class Usuarios extends Model
         ->get();
     return $dados;
     }
+    public function getUserByEmail($email){
+        $dados = DB::table($this->table)
+            ->select('id')
+            ->where('email', $email)
+            ->get();
+        return $dados;
+    }
+
 
 }

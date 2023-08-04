@@ -11,7 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('cursos', function (Blueprint $table) {
+            $table->id()->unique();
+            $table->text('codigo')->nullable();
+            $table->text('descricao')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -19,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('cursos');
     }
 };

@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->integer('curso')->nullable();
-            $table->string('password');
+            $table->integer('curso_id')->nullable();
+            $table->string('password')->nullable();
             $table->integer('type')->nullable();
             $table->integer('permite_dados')->nullable();
             $table->integer('is_employed')->nullable();

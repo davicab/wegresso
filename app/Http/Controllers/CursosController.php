@@ -29,15 +29,15 @@ class CursosController extends Controller
         }
 
         $requestCursos = [
-            'computacao' => 0,
-            'eletrica' => 1,
-            'civil' => 2,
+            'computacao' => 1,
+            'eletrica' => 2,
+            'civil' => 3,
         ];
 
         $rightCursos = [
-            'Engenharia de Computação' => 0,
-            'Engenharia Elétrica' => 1,
-            'Engenharia Civil' => 2,
+            'Engenharia de Computação' => 1,
+            'Engenharia Elétrica' => 2,
+            'Engenharia Civil' => 3,
         ];
 
         if (array_key_exists($curso, $requestCursos)) {

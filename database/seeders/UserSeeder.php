@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
           'is_employed' => random_int(0, 1),
           'ano_ingresso' => random_int(2017, 2022),
           'ano_egresso' => random_int(2023, 2029),
-          'curso'  => random_int(0, 2),
+          'curso_id'  => random_int(1, 3),
           'status' => '0',
         ]);
       }
