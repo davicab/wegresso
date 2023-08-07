@@ -72,4 +72,12 @@ class Cursos extends Model
         return $dados;
     }
 
+    public function getCursoByCodigo($codigo){
+        $dados = DB::table($this->table)
+            ->select('id', 'descricao')
+            ->where('codigo', $codigo)
+            ->first();
+        return $dados;
+    }
+
 }

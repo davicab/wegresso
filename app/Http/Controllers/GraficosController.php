@@ -30,10 +30,35 @@ class GraficosController extends Controller
         $nomeCurso = [];
         $dadosGraficos = [];
 
+
+        $usuarios = $this->usuarios->getAllAlunos();
+
+        foreach ($usuarios as $usuario) {
+            $cursoId = $usuario->curso_id;
+            $diferenca = ($usuario->ano_egresso - $usuario->ano_ingresso) + 1;
+        
+            if (!isset($mediaPorCurso[$cursoId])) {
+                $mediaPorCurso[$cursoId] = [
+                    'soma' => 0,
+                    'quantidade' => 0,
+                ];
+            }
+        
+            $mediaPorCurso[$cursoId]['soma'] += $diferenca;
+            $mediaPorCurso[$cursoId]['quantidade']++;
+        }
+        
+        $mediaFinal = [];
+        
+        foreach ($mediaPorCurso as $cursoId => $dados) {
+            $media = $dados['soma'] / $dados['quantidade'];
+            $mediaFinal[$cursoId] = round($media, 1);
+        }
+
         foreach ($cursos as $curso){
             $alunosEmpregados[$curso->id] = $this->usuarios->getAlunosEmpregadosCurso($curso->id);
         }
-        // dd($alunosEmpregados);
+        
         foreach ($alunosPorCursos as $result) {
             $ano_egresso = $result->ano_egresso;
             $curso_id = $result->id;
@@ -45,6 +70,7 @@ class GraficosController extends Controller
                     'labels' => $nomeCurso[$curso_id],
                     'data' => [],
                     'empregados' =>[],
+                    'media' => $mediaFinal[$curso_id]
                 ];
             }
 

@@ -27,8 +27,6 @@ class HomeController extends Controller
         $allAlunos = $this->usuarios->getAlunos();
         $allCursos = $this->cursos->getCursos();
 
-        $countCurso = count($allCursos);
-
         $usariosPorCurso = $this->usuarios->getAlunosPorCurso();
 
         $arrCurso = [];
@@ -42,25 +40,56 @@ class HomeController extends Controller
 
         $contagemPorAno = $this->usuarios->getAlunosAgrupadosPorAnoEgresso();
 
-        $contagemGeralPorAno = $this->usuarios->getAlunosAgrupadosGeralPorAno();
-
-        // dd($contagemGeralPorAno);
-
         $alunosEmpregados = $this->usuarios->getAlunosEmpregados();
 
         $alunosComputação = $this->usuarios->getAlunosComputacao();
         $alunosEletrica = $this->usuarios->getAlunosEletrica();
         $alunosCivil = $this->usuarios->getAlunosCivil();
 
+
+        $alunosPorCursos = $this->cursos->getQuantidadeAlunoPorCurso();
+
+        foreach ($alunosPorCursos as $result) {
+            $ano_egresso = $result->ano_egresso;
+            $curso_id = $result->id;
+            $nomeCurso[$curso_id] = $result->descricao;
+            $count = $result->count;
+
+            if (!isset($dadosGraficoStack[$curso_id])) {
+                $dadosGraficoStack[$curso_id] = [
+                    'labels' => $nomeCurso[$curso_id],
+                    'data' => [],
+                ];
+            }
+
+            $dadosGraficoStack[$curso_id]['data'][$ano_egresso] = $count;
+        }
+
+        // Preencher os anos ausentes com '0' em cada curso
+        foreach ($dadosGraficoStack as &$curso) {
+            $primeiroAno = min(array_keys($curso['data']));
+            $ultimoAno = max(array_keys($curso['data']));
+
+            $intervaloAnos = range($primeiroAno, $ultimoAno);
+
+            foreach ($intervaloAnos as $ano) {
+                if (!isset($curso['data'][$ano])) {
+                    $curso['data'][$ano] = 0;
+                }
+            }
+
+            ksort($curso['data']);
+        }
+
         $dadosGraficoPie = json_encode([
             'labels' => $arrCurso,
             'data' => $arrAluno
         ]);
 
-        $dadosGraficoStack = json_encode([
-            'labels' => $arrCurso,
-            'data' => $contagemGeralPorAno,
-        ]);
+        // $dadosGraficoStack = json_encode([
+        //     'labels' => $arrCurso,
+        //     'data' => $contagemGeralPorAno,
+        // ]);
 
         // dd($arrCurso);
 
@@ -77,7 +106,7 @@ class HomeController extends Controller
 
         $this->dadosPagina['dadosGrafico'] = $dadosGrafico;
         $this->dadosPagina['dadosGraficoPie'] = $dadosGraficoPie;
-        $this->dadosPagina['dadosGraficoStack'] = $dadosGraficoStack;
+        $this->dadosPagina['dadosGraficoStack'] = json_encode($dadosGraficoStack);
         $this->dadosPagina['dadosGraficoBars'] = $dadosGraficoBars;
         $this->dadosPagina['alunos'] = $allAlunos;
         $this->dadosPagina['cursos'] = Cursos::all();

@@ -172,13 +172,12 @@ class Usuarios extends Model
         return $dados;
     }
 
-    public function getAlunoByCurso($curso){
+    public function getAlunoByCurso(){
         $dados = DB::table($this->table)
-            ->select('name', 'ano_egresso')
-            ->where('curso_id', $curso)
+            ->select('curso_id', 'ano_egresso', 'ano_ingresso')
             ->where('type', '2')
             ->where('permite_dados', '1')
-            ->orderBy('ano_egresso', 'asc')
+            ->orderBy('curso_id', 'asc')
             ->get();
         return $dados;
     }
@@ -226,5 +225,10 @@ class Usuarios extends Model
         return $dados;
     }
 
-
+    public function getAllAlunos(){
+        $dados = DB::table('users')
+            ->select('curso_id', 'ano_ingresso', 'ano_egresso')
+            ->get();
+        return $dados;
+    }
 }

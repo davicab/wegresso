@@ -39,7 +39,7 @@ Route::put('/salvar-perfil/{id}', [PerfilController:: class, 'salvarPerfil']);
 
 Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/{curso}', [CursosController::class, 'index']);
+Route::get('/cursos', [CursosController::class, 'index']);
 
 Route::get('/cursos/graficos', [GraficosController:: class, 'index']);
 

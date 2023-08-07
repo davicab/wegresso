@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cursos;
 use App\Models\Usuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,15 +12,19 @@ class CursosController extends Controller
 {
     private $usuarios;
     private $dadosPagina;
+    private $cursos;
 
     const VIEW = 'curso';
 
     public function __construct() {
         $this->usuarios = new Usuarios();
+        $this->cursos = new Cursos();
         $this->dadosPagina = array();
     }
 
-    public function index(Request $request, $curso){
+    public function index(){
+
+        $cursos = $this->cursos->getCursos();
         $auth = Auth::check();
         $authUser = Auth::user();
         $canSee = false;
@@ -27,41 +32,32 @@ class CursosController extends Controller
         if($auth && $authUser->type != 2){
             $canSee = true;
         }
+        // dd($this->cursos->getCursoByCodigo($curso));
 
-        $requestCursos = [
-            'computacao' => 1,
-            'eletrica' => 2,
-            'civil' => 3,
-        ];
+        // if (array_key_exists($curso, $requestCursos)) {
+        //     $egressosData = $this->usuarios->getAlunoByCurso($requestCursos[$curso]);
+        //     // Proteger os nomes dos usuários e criar o array $egressosFormatados
+        //     $egressosFormatados = [];
+        //     foreach ($egressosData as $egressoData) {
+        //         $egresso = new stdClass();
+        //         if($canSee == true){
+        //             $egresso->name = $egressoData->name;
+        //         }else{
+        //             $egresso->name = $this->protegerNome($egressoData->name);
+        //         }
+        //         $egresso->ano_egresso = $egressoData->ano_egresso;
+        //         $egressosFormatados[] = $egresso;
+        //     }
 
-        $rightCursos = [
-            'Engenharia de Computação' => 1,
-            'Engenharia Elétrica' => 2,
-            'Engenharia Civil' => 3,
-        ];
+        //     $this->dadosPagina['curso'] = array_search($requestCursos[$curso], $rightCursos);
+        //     $this->dadosPagina['cursoCode'] = $requestCursos[$curso];
 
-        if (array_key_exists($curso, $requestCursos)) {
-            $egressosData = $this->usuarios->getAlunoByCurso($requestCursos[$curso]);
-            // Proteger os nomes dos usuários e criar o array $egressosFormatados
-            $egressosFormatados = [];
-            foreach ($egressosData as $egressoData) {
-                $egresso = new stdClass();
-                if($canSee == true){
-                    $egresso->name = $egressoData->name;
-                }else{
-                    $egresso->name = $this->protegerNome($egressoData->name);
-                }
-                $egresso->ano_egresso = $egressoData->ano_egresso;
-                $egressosFormatados[] = $egresso;
-            }
-
-            $this->dadosPagina['curso'] = array_search($requestCursos[$curso], $rightCursos);
-            $this->dadosPagina['cursoCode'] = $requestCursos[$curso];
-
-            $this->dadosPagina['egressos'] = $egressosFormatados;
-        }
+        //     $this->dadosPagina['egressos'] = $egressosFormatados;
+        // }
 
         $this->dadosPagina['highUser'] = false;
+
+        $this->dadosPagina['cursos'] = $cursos;
 
         $this->dadosPagina['auth'] = Auth::check();
 

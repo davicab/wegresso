@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 </head>
 <body>
-    @include('inc/header')
+    {{-- @include('inc/header') --}}
     <div class="area-site">
         <div class="breadcrumbs">
             <span> <a href="{{url('')}}" class="back-home">Home</a></span>
@@ -19,7 +19,7 @@
             <h1 class="home-h1">Egressos do curso </h1>
             <hr class="dotted-line">
         </div>
-        {{dd($dadosGraficos)}}
+        {{-- {{dd($dadosGraficos)}} --}}
         <div class="area-egressos">
             <div class="select-course">
                 @foreach ($dadosGraficos as $dadosGrafico)

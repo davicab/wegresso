@@ -98,6 +98,7 @@ footer{
 }
 .first-block{
     display: flex;
+    flex-direction: column;
     gap: 15px;
     justify-content: center;
     margin: 20px 0;
@@ -184,6 +185,7 @@ footer{
 }
 .third-block{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 15px;
