@@ -46,12 +46,6 @@ class VerifyDataController extends Controller
     }
 
     public function userVerfiyView(Request $request, $id){
-        $rightCursos = [
-            1 => 'Engenharia de Computação',
-            2 => 'Engenharia Elétrica',
-            3 => 'Engenharia Civil' ,
-        ];
-
         if(!Auth::check()) return redirect('/login');
 
         $userType = Auth::user()->type;
@@ -118,8 +112,6 @@ class VerifyDataController extends Controller
             return $usuario['Situação no Curso'] === 'Concluído' || $usuario['Situação no Curso'] === 'Formado';
         });
 
-        // dd($usuariosConcluidos);
-
         foreach($usuariosConcluidos as $usuario){
 
             if($usuario['Situação no Curso'] == 'Concluído'){
@@ -134,8 +126,6 @@ class VerifyDataController extends Controller
             }else{
                 $dataFinal = $usuario['Ano de Conclusão'];
             }
-
-
 
             $curso = $this->cursos->verificarOuCriarCurso($usuario['Código Curso'], $usuario['Descrição do Curso']);
 
@@ -162,7 +152,5 @@ class VerifyDataController extends Controller
         return redirect('/painel-administracao')->with('responseSuccess', 'Usuário salvos com sucesso.');
 
 
-        // Agora $usuariosConcluidos conterá apenas os usuários com a situação do curso "Concluído" ou "Formado"
-        // dd($usuariosConcluidos);
     }
 }

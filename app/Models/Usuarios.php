@@ -24,7 +24,7 @@ class Usuarios extends Model
         'status',
         'permite_dados',
         'type',
-        
+
     ];
 
     // public function curso(): BelongsTo
@@ -86,33 +86,6 @@ class Usuarios extends Model
         return $dados;
     }
 
-    public function getAlunosComputacao(){
-        $dados = DB::table($this->table)
-            ->where('curso_id', '1')
-            ->where('permite_dados', '1')
-            ->select('ano_egresso', 'ano_ingresso')
-            ->get();
-        return $dados;
-    }
-
-    public function getAlunosEletrica(){
-        $dados = DB::table($this->table)
-            ->where('curso_id', '2')
-            ->where('permite_dados', '1')
-            ->select('ano_egresso', 'ano_ingresso')
-            ->get();
-        return $dados;
-    }
-
-    public function getAlunosCivil(){
-        $dados = DB::table($this->table)
-            ->where('curso_id', '3')
-            ->where('permite_dados', '1')
-            ->select('ano_egresso', 'ano_ingresso')
-            ->get();
-        return $dados;
-    }
-
     public function getUserById($id){
         $dados = DB::table($this->table)
             ->select('id', 'name', 'curso_id', 'is_employed', 'ano_egresso', 'ano_ingresso', 'status', 'experiencias', 'atual_emprego')
@@ -122,43 +95,6 @@ class Usuarios extends Model
         return $dados;
     }
 
-    // public function getAlunosAgrupadosGeralPorAno(){
-    //     $dados = DB::table($this->table)
-    //         ->select('ano_egresso')
-    //         ->selectRaw('
-    //             SUM(CASE WHEN curso = 0 THEN 1 ELSE 0 END) as curso0,
-    //             SUM(CASE WHEN curso = 1 THEN 1 ELSE 0 END) as curso1,
-    //             SUM(CASE WHEN curso = 2 THEN 1 ELSE 0 END) as curso2
-    //         ')
-    //         ->groupBy('ano_egresso')
-    //         ->orderBy('ano_egresso', 'asc')
-    //         ->get();
-    
-    //     $dados = [];
-    
-    //     foreach ($anos as $ano) {
-    //         $cursoCounts = DB::table($this->table)
-    //             ->select('curso_id', DB::raw('COUNT(*) as count'))
-    //             ->where('ano_egresso', $ano->ano_egresso)
-    //             ->groupBy('curso_id')
-    //             ->get();
-    
-    //         $dadosAno = [
-    //             'ano_egresso' => $ano->ano_egresso,
-    //         ];
-    
-    //         foreach ($cursoCounts as $cursoCount) {
-    //             $curso = "curso{$cursoCount->curso_id}";
-    //             $dadosAno[$curso] = (string) $cursoCount->count;
-    //         }
-    
-    //         $dados[] = $dadosAno;
-    //     }
-    
-    //     return $dados;
-    // }
-    
-    
 
     public function getAlunosEmpregados(){
         $dados = DB::table($this->table)
@@ -172,12 +108,13 @@ class Usuarios extends Model
         return $dados;
     }
 
-    public function getAlunoByCurso(){
+    public function getAlunoByCurso($id){
         $dados = DB::table($this->table)
-            ->select('curso_id', 'ano_egresso', 'ano_ingresso')
+            ->select('name', 'ano_egresso', 'ano_ingresso')
             ->where('type', '2')
+            ->where('curso_id', $id)
             ->where('permite_dados', '1')
-            ->orderBy('curso_id', 'asc')
+            ->orderBy('name', 'asc')
             ->get();
         return $dados;
     }

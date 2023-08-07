@@ -42,11 +42,6 @@ class HomeController extends Controller
 
         $alunosEmpregados = $this->usuarios->getAlunosEmpregados();
 
-        $alunosComputação = $this->usuarios->getAlunosComputacao();
-        $alunosEletrica = $this->usuarios->getAlunosEletrica();
-        $alunosCivil = $this->usuarios->getAlunosCivil();
-
-
         $alunosPorCursos = $this->cursos->getQuantidadeAlunoPorCurso();
 
         foreach ($alunosPorCursos as $result) {

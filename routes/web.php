@@ -41,6 +41,8 @@ Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/cursos', [CursosController::class, 'index']);
 
+Route::get('/cursos/{slug}/{codigo}', [CursosController:: class, 'singleCurso']);
+
 Route::get('/cursos/graficos', [GraficosController:: class, 'index']);
 
 Route::get('/register', function () {

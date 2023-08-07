@@ -13,15 +13,17 @@
         <div class="breadcrumbs">
             <span> <a href="{{url('')}}" class="back-home">Home</a></span>
             <img src="{{asset('images/chavron-right.svg')}}" alt="" width="7px" height="10px">
-            <span>Todos os cursos</span>
+            <span> <a href="{{url('')}}/cursos" class="back-home">Lista de cursos</a></span>
+            <span>Listagem de egressos do curso {{$curso->descricao}}</span>
         </div>
         <div class="title-home">
             {{-- <h1 class="home-h1">Egressos do curso {{$curso}}</h1> --}}
             <hr class="dotted-line">
         </div>
         <div class="area-egressos">
-            @foreach($cursos as $curso)
-                <a href="{{url('/')}}/cursos/{{$slug[$curso->id]}}/{{$curso->codigo}}">{{$curso->codigo}}, {{$curso->descricao}}</a>
+            {{-- {{dd($alunosCurso)}} --}}
+            @foreach($egressos as $aluno)
+                <span>{{$aluno->name}}, {{$aluno->ano_egresso}}</span>
             @endforeach
         </div>
     </div>

@@ -7,6 +7,7 @@ use App\Models\Usuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use stdClass;
+use Illuminate\Support\Str;
 
 class CursosController extends Controller
 {
@@ -15,6 +16,7 @@ class CursosController extends Controller
     private $cursos;
 
     const VIEW = 'curso';
+    const VIEW_FILTER = 'alunos-curso';
 
     public function __construct() {
         $this->usuarios = new Usuarios();
@@ -32,6 +34,15 @@ class CursosController extends Controller
         if($auth && $authUser->type != 2){
             $canSee = true;
         }
+
+        $arrSlug = [];
+
+        foreach ($cursos as $curso){
+            $rmSufixo = preg_replace('/\s*-\s*(?:Integrado|Trindade)\s*/i', '', $curso->descricao);
+            $arrSlug[$curso->id] = Str::slug($rmSufixo, '-');
+
+        }
+        $this->dadosPagina['slug'] = $arrSlug;
         // dd($this->cursos->getCursoByCodigo($curso));
 
         // if (array_key_exists($curso, $requestCursos)) {
@@ -79,6 +90,34 @@ class CursosController extends Controller
         $restoNome = str_repeat('*', $tamanhoNome - 1);
 
         return $primeiraLetra . $restoNome;
+    }
+
+    public function singleCurso(Request $request, $slug, $codigo){
+        $infoCurso = $this->cursos->getCursoByCodigo($codigo);
+
+        $alunos = $this->usuarios->getAlunoByCurso($infoCurso->id);
+
+        $canSee = false;
+
+        $this->dadosPagina['curso'] = $infoCurso;
+
+        // Proteger os nomes dos usuários e criar o array $egressosFormatados
+        $egressosFormatados = [];
+        foreach ($alunos as $egressoData) {
+            $egresso = new stdClass();
+            if($canSee == true){
+                $egresso->name = $egressoData->name;
+            }else{
+                $egresso->name = $this->protegerNome($egressoData->name);
+            }
+            $egresso->ano_egresso = $egressoData->ano_egresso;
+            $egressosFormatados[] = $egresso;
+        }
+
+        $this->dadosPagina['egressos'] = $egressosFormatados;
+
+        // $this->dadosPagina['alunosCurso'] = alunos;
+        return view(self::VIEW_FILTER, $this->dadosPagina);
     }
 
 }

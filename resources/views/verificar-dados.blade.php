@@ -15,13 +15,13 @@
             <hr class="dotted-line">
         </div>
         <div class="form-box">
-            @if(!$nao_verificados->isNotEmpty())
+            {{-- @if(!$nao_verificados->isNotEmpty())
                 <span>Sem dados de usuários para serem validados</span>
             @else
                 @foreach($nao_verificados as $aluno)
                     <a class="single-user" id="{{$aluno->id}}" href="{{url('/')}}/validar-egresso/{{$aluno->id}}">{{$aluno->name}}
                 @endforeach
-            @endif
+            @endif --}}
         </div>
         <div class="form-box">
             <h2>Cursos da instituição: </h2>
@@ -34,7 +34,7 @@
             <h3>Criação de novos cursos: </h3>
             <form method="POST" action="{{ url('/') }}/create-curso" class="perfil-form">
                 @method('PUT')
-                @csrf 
+                @csrf
                 <div class="full-box">
                     <label for="nome">Nome do curso:</label>
                     <input class="form-control" type="text" maxlength="200" name="nome" id="nome" value="{{ isset($nome) ? $nome : '' }}" placeholder="Nome do curso">
@@ -50,7 +50,7 @@
             <h2>Egressos da instituição: </h2>
             <form method="POST" action="{{ url('/') }}/import-data" class="perfil-form">
                 @method('PUT')
-                @csrf 
+                @csrf
                 <div class="full-box">
                     <label for="question">Importar usuarios do arquivo importado ?</label>
                     <select class="form-control" name="question" id="question" required>
@@ -66,6 +66,6 @@
     {{-- @include('inc/footer') --}}
 </body>
 <script>
-    var page = 'verificar';
+    var page = 'verificar-dados';
 </script>
 </html>

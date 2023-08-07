@@ -20,11 +20,6 @@ class Cursos extends Model
         'descricao',
     ];
 
-    // public function users() : HasMany
-    // {
-    //     return $this->hasMany(Usuarios::class , 'curso_id' , 'id');
-    // }
-
     public function getCursos(){
         $dados = DB::table($this->table)
             ->select('id', 'codigo', 'descricao')
@@ -40,7 +35,7 @@ class Cursos extends Model
 
         if (!$curso) {
             $curso = Cursos::create([
-                'codigo' => $codigoCurso,
+                'codigo' => strtolower($codigoCurso),
                 'descricao' => $descricaoCurso,
             ]);
             return $curso;
