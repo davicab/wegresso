@@ -21,11 +21,11 @@ class UserSeeder extends Seeder
           'email' => Str::random(10).'@gmail.com',
           'password' => Hash::make('password'),
           'type' => '2',
-          'permite_dados' => '1',  // tipo do usuario
+          'permite_dados' => '1',
           'is_employed' => random_int(0, 1),
           'ano_ingresso' => random_int(2017, 2022),
           'ano_egresso' => random_int(2023, 2029),
-          'curso_id'  => random_int(1, 3),
+          'curso_id'  => random_int(1, 10),
           'status' => '0',
         ]);
       }

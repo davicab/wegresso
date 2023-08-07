@@ -26,13 +26,13 @@ class VerifyDataController extends Controller
 
     public function index(){
 
-        if(!Auth::check()) return redirect('/login');
+        // if(!Auth::check()) return redirect('/login');
 
-        $userType = Auth::user()->type;
+        // $userType = Auth::user()->type;
 
-        if($userType != '1' && $userType != '0') {
-            return redirect('/perfil');
-        }
+        // if($userType != '1' && $userType != '0') {
+        //     return redirect('/perfil');
+        // }
 
         $this->dadosPagina['alunos'] = $this->usuarios->getAlunos();
 
@@ -59,7 +59,7 @@ class VerifyDataController extends Controller
         if($userType != '1' && $userType != '0') {
             return redirect('/perfil')->with('responseError', 'Permissão negada.');
         }
-        
+
         $this->dadosPagina['infoUser'] = $this->usuarios->getUserById($id);
 
         return view(self::VIEW_USER, $this->dadosPagina);
@@ -77,7 +77,7 @@ class VerifyDataController extends Controller
         if (!$aluno) {
             return redirect('/perfil')->with('responseError', 'Usuário não encontrado.');
         }
-        
+
         $aluno->status = $request->input('status');
 
         try{
@@ -119,9 +119,9 @@ class VerifyDataController extends Controller
         });
 
         // dd($usuariosConcluidos);
-        
+
         foreach($usuariosConcluidos as $usuario){
-            
+
             if($usuario['Situação no Curso'] == 'Concluído'){
                 $dataEgresso = $usuario['Data de Conclusão de Curso'];
                 $datetime = DateTime::createFromFormat('d/m/Y', $dataEgresso);
@@ -134,7 +134,7 @@ class VerifyDataController extends Controller
             }else{
                 $dataFinal = $usuario['Ano de Conclusão'];
             }
-            
+
 
 
             $curso = $this->cursos->verificarOuCriarCurso($usuario['Código Curso'], $usuario['Descrição do Curso']);
@@ -150,6 +150,7 @@ class VerifyDataController extends Controller
                     'permite_dados' => 1,
                     'status' => 0,
                     'curso_id' => $curso->id,
+                    'is_employed' => random_int(0, 1),
                 ]);
             } catch(\Exception $e) {
                 var_dump($e);
@@ -160,7 +161,7 @@ class VerifyDataController extends Controller
 
         return redirect('/painel-administracao')->with('responseSuccess', 'Usuário salvos com sucesso.');
 
-        
+
         // Agora $usuariosConcluidos conterá apenas os usuários com a situação do curso "Concluído" ou "Formado"
         // dd($usuariosConcluidos);
     }

@@ -11,100 +11,82 @@ class GraficosController extends Controller
 {
     private $usuarios;
     private $dadosPagina;
+    private $cursos;
 
     const VIEW = 'graficos-cursos';
 
     public function __construct() {
         $this->usuarios = new Usuarios();
+        $this->cursos = new Cursos();
         $this->dadosPagina = array();
     }
 
     public function index(){
+        $cursos = $this->cursos->getCursos();
+        $alunosEmpregados = [];
 
-        $empregadosComp = $this->usuarios->getAlunosEmpregadosCurso(1);
-        $empregadosEletr = $this->usuarios->getAlunosEmpregadosCurso(2);
-        $empregadosCivil = $this->usuarios->getAlunosEmpregadosCurso(3);
+        $alunosPorCursos = $this->cursos->getQuantidadeAlunoPorCurso();
 
-        $alunosComp = $this->usuarios->getAlunosComputacao();
-        $alunosEletr = $this->usuarios->getAlunosEletrica();
-        $alunosCivil = $this->usuarios->getAlunosCivil();
-        
-        function calcularMediaFormatura($alunos) {
-            $totalAlunos = count($alunos);
-            $totalTempoFormatura = 0;
-        
-            foreach ($alunos as $aluno) {
-                $tempoFormatura = $aluno->ano_egresso - $aluno->ano_ingresso;
-                
-                $totalTempoFormatura += $tempoFormatura;
-            }
-        
-            $mediaTempoFormatura = $totalTempoFormatura / $totalAlunos;
-        
-            return number_format($mediaTempoFormatura, 1);
-        }
-        
-        $mediaTempoComp = calcularMediaFormatura($alunosComp);
-        $mediaTempoEletr = calcularMediaFormatura($alunosEletr);
-        $mediaTempoCivil = calcularMediaFormatura($alunosCivil);
-        
-        $alunosPorCursos = Cursos::getQuantidadeAlunoPorCurso();
         $nomeCurso = [];
         $dadosGraficos = [];
-        
+
+        foreach ($cursos as $curso){
+            $alunosEmpregados[$curso->id] = $this->usuarios->getAlunosEmpregadosCurso($curso->id);
+        }
+        // dd($alunosEmpregados);
         foreach ($alunosPorCursos as $result) {
             $ano_egresso = $result->ano_egresso;
             $curso_id = $result->id;
             $nomeCurso[$curso_id] = $result->descricao;
             $count = $result->count;
-        
+
             if (!isset($dadosGraficos[$curso_id])) {
                 $dadosGraficos[$curso_id] = [
                     'labels' => $nomeCurso[$curso_id],
                     'data' => [],
+                    'empregados' =>[],
                 ];
             }
-        
-            $dadosGraficos[$curso_id]['data'][] = [
-                'ano_egresso' => $ano_egresso,
-                'quantidade' => $count,
-            ];
+
+            $dadosGraficos[$curso_id]['data'][$ano_egresso] = $count;
         }
-        
-        // Montar os dados para a view
-        $dadosParaView = [
-            'dadosGraficos' => $dadosGraficos,
-        ];
-        
-        
-        $dadosGraficoComp = json_encode([
-            'labels' => ['Engenharia de Computação'],
-            // 'data' => $dadosGraficoComp,
-            'empregados' => $empregadosComp,
-            'mediaFormatura' => $mediaTempoComp,
-        ]);
-        
-        $dadosGraficoEletr = json_encode([
-            'labels' => ['Engenharia Elétrica'],
-            // 'data' => $dadosGraficoEletr,
-            'empregados' => $empregadosEletr,
-            'mediaFormatura' => $mediaTempoEletr,
-        ]);
-        
-        $dadosGraficoCivil = json_encode([
-            'labels' => ['Engenharia Civil'],
-            // 'data' => $dadosGraficoCivil,
-            'empregados' => $empregadosCivil,
-            'mediaFormatura' => $mediaTempoCivil,
-        ]);
-        
-        $this->dadosPagina['dadosGrafico'] = $dadosParaView;
-        $this->dadosPagina['dadosGraficoEletr'] = $dadosGraficoEletr;
-        $this->dadosPagina['dadosGraficoCivil'] = $dadosGraficoCivil;
+
+        // Preencher os anos ausentes com '0' em cada curso
+        foreach ($dadosGraficos as &$curso) {
+            $primeiroAno = min(array_keys($curso['data']));
+            $ultimoAno = max(array_keys($curso['data']));
+
+            $intervaloAnos = range($primeiroAno, $ultimoAno);
+
+            foreach ($intervaloAnos as $ano) {
+                if (!isset($curso['data'][$ano])) {
+                    $curso['data'][$ano] = 0;
+                }
+
+                // Inicializa empregados como 0 para cada ano
+                $curso['empregados'][$ano] = 0;
+            }
+
+            ksort($curso['data']);
+        }
+
+        foreach ($dadosGraficos as $curso_id => &$curso) {
+            foreach ($alunosEmpregados[$curso_id] as $aluno) {
+                $ano_egresso = $aluno->ano_egresso;
+                $empregados = (int) $aluno->empregados;
+
+                if (isset($curso['empregados'][$ano_egresso])) {
+                    $curso['empregados'][$ano_egresso] = $empregados;
+                }
+            }
+        }
+
+        $this->dadosPagina['dadosGraficos'] = $dadosGraficos;
+        $this->dadosPagina['primeiroGrafico'] = reset($dadosGraficos);
 
         $this->dadosPagina['auth'] = Auth::check();
 
         return view(self::VIEW, $this->dadosPagina);
     }
-    
+
 }

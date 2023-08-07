@@ -124,10 +124,10 @@ function createChart3(){
       }
     }
   });
-  
+
   // Obtém um array contendo todas as chaves do objeto keysObj
   const keysArray = Object.keys(keysObj);
-  
+
   console.log(keysArray);
 
   const ctx = document.getElementById('chart-3').getContext('2d');
@@ -241,8 +241,9 @@ function handleCheck(){
 
             if (item.checked) {
                 const obj = JSON.parse(item.value)
+                console.log(obj)
 
-                loadChart.data.datasets[0].data = obj.data.map(entry => entry.curso);
+                loadChart.data.datasets[0].data = obj.data;
                 loadChart.data.datasets[0].label = `Egressos de ${obj.labels}`
                 loadChart.update();
 
@@ -259,43 +260,45 @@ function handleCheck(){
     });
 }
 function chartBarReload() {
-  const chartDataElement = document.getElementById('chart-1');
-  const jsonString = chartDataElement.getAttribute('data-dados-grafico');
+    const chartDataElement = document.getElementById('chart-1');
+    const jsonString = chartDataElement.getAttribute('data-dados-grafico');
 
-  const data = JSON.parse(jsonString);
+    const data = JSON.parse(jsonString);
+    console.log(data);
 
-  const ctx = document.getElementById('chart-1').getContext('2d');
-  loadChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: data.data.map(entry => entry.ano_egresso),
-          datasets: [{
-              label: `Egressos de ${data.labels}`,
-              data: data.data.map(entry => entry.curso),
-              backgroundColor: 'rgba(54, 162, 235, 0.5)',
-              borderColor: 'rgba(54, 162, 235, 1)',
-              borderWidth: 1
-          }]
-      },
-      options: {
-          responsive: true,
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: 'Ano'
-              }
-            },
-            y: {
-              title: {
-                display: true,
-                text: 'Alunos'
-              }
+    const ctx = document.getElementById('chart-1').getContext('2d');
+    loadChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(data.data), // Anos como labels
+            datasets: [{
+                label: `Egressos de ${data.labels}`,
+                data: Object.values(data.data), // Quantidade de alunos por ano
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Ano'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Alunos'
+                    }
+                }
             }
-          }
-      }
-  });
+        }
+    });
 }
+
 function chartLineReload(){
     const chartDataElement = document.getElementById('chart-2');
 

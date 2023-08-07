@@ -11,7 +11,6 @@
     @include('inc/header')
     <div class="area-site">
             <div class="card">
-                <div class="card-header">{{ __('Redefinir senha') }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -19,32 +18,25 @@
                             <strong>Link de redefinição de senha enviado!</strong>
                         </div>
                     @endif
+                    <div class="custom-form">
+                        <h1>Redefinição de senha</h1>
+                        <h2>Preencha o campo abaixo para receber o link de confirmação</h2>
+                        <form method="POST" action="{{ route('password.email') }}">
+                            @csrf
+                            <input id="email" placeholder="email" type="email" class="custom-input @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
 
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
+                            @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>Email não encontrado nos nossos registros.</strong>
+                                </span>
+                            @enderror
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>Email não encontrado nos nossos registros.</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Enviar link de redefinição de senha') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                            <button type="submit" class="custom-submit-button">
+                                {{ __('Enviar link de redefinição de senha') }}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
     </div>
