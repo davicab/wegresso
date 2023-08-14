@@ -26,13 +26,13 @@ class VerifyDataController extends Controller
 
     public function index(){
 
-        // if(!Auth::check()) return redirect('/login');
+        if(!Auth::check()) return redirect('/login');
 
-        // $userType = Auth::user()->type;
+        $userType = Auth::user()->type;
 
-        // if($userType != '1' && $userType != '0') {
-        //     return redirect('/perfil');
-        // }
+        if($userType != '1' && $userType != '0') {
+            return redirect('/perfil');
+        }
 
         $this->dadosPagina['alunos'] = $this->usuarios->getAlunos();
 
@@ -129,23 +129,26 @@ class VerifyDataController extends Controller
 
             $curso = $this->cursos->verificarOuCriarCurso($usuario['Código Curso'], $usuario['Descrição do Curso']);
 
-            try{
-
-                User::create([
-                    'name' => $usuario['Nome'],
-                    'email' => $usuario['Email Pessoal'],
-                    'type' => 2,
-                    'ano_ingresso' => $usuario['Ano de Ingresso'],
-                    'ano_egresso' => $dataFinal,
-                    'permite_dados' => 1,
-                    'status' => 0,
-                    'curso_id' => $curso->id,
-                    'is_employed' => random_int(0, 1),
-                ]);
-            } catch(\Exception $e) {
-                var_dump($e);
-                return redirect('/perfil')->with('responseError', 'Ocorreu um erro, tente novamente.');
+            if(!$this->usuarios->getAlunoByEmail($usuario['Email Pessoal'])) {
+                try{
+    
+                    User::create([
+                        'name' => $usuario['Nome'],
+                        'email' => $usuario['Email Pessoal'],
+                        'type' => 2,
+                        'ano_ingresso' => $usuario['Ano de Ingresso'],
+                        'ano_egresso' => $dataFinal,
+                        'permite_dados' => 1,
+                        'status' => 0,
+                        'curso_id' => $curso->id,
+                        'is_employed' => random_int(0, 1),
+                    ]);
+                } catch(\Exception $e) {
+                    var_dump($e);
+                    return redirect('/perfil')->with('responseError', 'Ocorreu um erro, tente novamente.');
+                }
             }
+
 
         }
 

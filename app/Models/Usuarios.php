@@ -5,11 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use App\Models\Cursos;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Builder;
-
 class Usuarios extends Model
 {
     use HasFactory;
@@ -27,18 +22,9 @@ class Usuarios extends Model
 
     ];
 
-    // public function curso(): BelongsTo
-    // {
-    //     return $this->belongsTo(Cursos::class, 'curso_id');
-    // }
-
     // Usuarios type = 0 -- Root
     // Usuarios type = 1 -- Administradores
     // Usuarios type = 2 -- Alunos
-
-    // Curso = 0 -- Computação
-    // Curso = 1 -- Eletrica
-    // Curso = 2 -- Civil
 
     // status = 0 -- dados não verificados
     // status = 1 -- dados verificados
@@ -62,17 +48,6 @@ class Usuarios extends Model
             ->get();
 
         return $alunosPorCurso;
-    }
-
-    public function getAnosEgresso(){
-        $dados = DB::table($this->table)
-            ->where('type', '2')
-            ->where('permite_dados', '1')
-            ->distinct()
-            ->orderByRaw('CAST(ano_egresso AS UNSIGNED)')
-            ->pluck('ano_egresso');
-
-        return $dados;
     }
 
     public function getAlunosAgrupadosPorAnoEgresso(){
@@ -119,18 +94,6 @@ class Usuarios extends Model
         return $dados;
     }
 
-    public function getCountAlunosByCurso($curso){
-        $dados = DB::table($this->table)
-            ->selectRaw('ano_egresso, COUNT(*) as count')
-            ->where('curso_id', $curso)
-            ->where('type', '2')
-            ->where('permite_dados', '1')
-            ->groupBy('ano_egresso')
-            ->orderBy('ano_egresso', 'asc')
-            ->get();
-        return $dados;
-    }
-
     public function getAlunosEmpregadosCurso($curso){
         $dados = DB::table($this->table)
             ->select('ano_egresso')
@@ -146,25 +109,25 @@ class Usuarios extends Model
 
     public function getDadosAlunos(){
         $dados = DB::table($this->table)
-        ->select('id','name')
-        ->where('is_employed', '1')
-        ->where('status', '0')
-        ->whereNotNull('experiencias')
-        ->orderBy('ano_egresso', 'asc')
-        ->get();
-    return $dados;
+            ->select('id','name')
+            ->where('is_employed', '1')
+            ->where('status', '0')
+            ->whereNotNull('experiencias')
+            ->orderBy('ano_egresso', 'asc')
+            ->get();
+        return $dados;
     }
-    public function getUserByEmail($email){
-        $dados = DB::table($this->table)
-            ->select('id')
-            ->where('email', $email)
+    public function getAllAlunos(){
+        $dados = DB::table('users')
+            ->select('curso_id', 'ano_ingresso', 'ano_egresso')
             ->get();
         return $dados;
     }
 
-    public function getAllAlunos(){
-        $dados = DB::table('users')
-            ->select('curso_id', 'ano_ingresso', 'ano_egresso')
+    public function getAlunoByEmail($email){
+        $dados = DB::table($this->table)
+            ->select('id')
+            ->where('email', $email)
             ->get();
         return $dados;
     }

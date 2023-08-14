@@ -8,20 +8,20 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 </head>
 <body>
-    {{-- @include('inc/header') --}}
+    @include('inc/header')
     <div class="area-site">
         <div class="title-home">
             <h1 class="home-h1">Painel de administração</h1>
             <hr class="dotted-line">
         </div>
         <div class="form-box">
-            {{-- @if(!$nao_verificados->isNotEmpty())
+            @if(!$nao_verificados->isNotEmpty())
                 <span>Sem dados de usuários para serem validados</span>
             @else
                 @foreach($nao_verificados as $aluno)
                     <a class="single-user" id="{{$aluno->id}}" href="{{url('/')}}/validar-egresso/{{$aluno->id}}">{{$aluno->name}}
                 @endforeach
-            @endif --}}
+            @endif
         </div>
         <div class="form-box">
             <h2>Cursos da instituição: </h2>
@@ -63,7 +63,7 @@
         </div>
         {{-- {{dd($curso , $empregado, $ano_egresso, $ano_ingresso)}} --}}
     </div>
-    {{-- @include('inc/footer') --}}
+    @include('inc/footer')
 </body>
 <script>
     var page = 'verificar-dados';

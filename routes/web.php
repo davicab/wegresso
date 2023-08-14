@@ -45,9 +45,9 @@ Route::get('/cursos/{slug}/{codigo}', [CursosController:: class, 'singleCurso'])
 
 Route::get('/cursos/graficos', [GraficosController:: class, 'index']);
 
-Route::get('/register', function () {
-    return redirect()->to(config('app.url').'/', 301);
-});
+// Route::get('/register', function () {
+//     return redirect()->to(config('app.url').'/register', 301);
+// });
 Route::get('/logout', function () {
     return redirect()->to(config('app.url').'/', 301);
 });
