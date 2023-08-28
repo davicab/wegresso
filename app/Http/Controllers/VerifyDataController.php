@@ -76,7 +76,7 @@ class VerifyDataController extends Controller
 
         try{
             $result = $aluno->save();
-            return redirect('/painel-administracao')->with('responseSuccess', 'Usuário salvos com sucesso.');
+            return redirect('/painel-administracao')->with('responseSuccess', 'Usuário salvo com sucesso.');
         } catch(\Exception $e) {
             return redirect('/painel-administracao')->with('responseError', 'Ocorreu um erro, tente novamente.');
         }
@@ -129,9 +129,9 @@ class VerifyDataController extends Controller
 
             $curso = $this->cursos->verificarOuCriarCurso($usuario['Código Curso'], $usuario['Descrição do Curso']);
 
-            if(!$this->usuarios->getAlunoByEmail($usuario['Email Pessoal'])) {
+            // if(!$this->usuarios->getAlunoByEmail($usuario['Email Pessoal'])) {
                 try{
-    
+
                     User::create([
                         'name' => $usuario['Nome'],
                         'email' => $usuario['Email Pessoal'],
@@ -147,7 +147,7 @@ class VerifyDataController extends Controller
                     var_dump($e);
                     return redirect('/perfil')->with('responseError', 'Ocorreu um erro, tente novamente.');
                 }
-            }
+            // }
 
 
         }

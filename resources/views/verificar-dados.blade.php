@@ -19,7 +19,7 @@
                 <span>Sem dados de usuários para serem validados</span>
             @else
                 @foreach($nao_verificados as $aluno)
-                    <a class="single-user" id="{{$aluno->id}}" href="{{url('/')}}/validar-egresso/{{$aluno->id}}">{{$aluno->name}}
+                    <a class="single-user" id="{{$aluno->id}}" href="{{url('/')}}/validar-egresso/{{$aluno->id}}">{{$aluno->name}}</a>
                 @endforeach
             @endif
         </div>

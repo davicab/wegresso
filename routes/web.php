@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CursosController;
+use App\Http\Controllers\EditarAlunoController;
 use App\Http\Controllers\GraficosController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PasswordController;
@@ -24,6 +25,10 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/painel-administracao', [VerifyDataController:: class, 'index']);
+
+Route::get('/editar-aluno/{id}', [EditarAlunoController:: class, 'index']);
+
+Route::put('/edita-dados/{id}', [EditarAlunoController:: class, 'editaDados']);
 
 Route::put('/import-data', [VerifyDataController:: class, 'importData']);
 

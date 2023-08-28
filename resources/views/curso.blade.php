@@ -16,12 +16,12 @@
             <span>Todos os cursos</span>
         </div>
         <div class="title-home">
-            {{-- <h1 class="home-h1">Egressos do curso {{$curso}}</h1> --}}
+            <h1 class="home-h1">Todos os cursos</h1>
             <hr class="dotted-line">
         </div>
         <div class="area-egressos">
             @foreach($cursos as $curso)
-                <a href="{{url('/')}}/cursos/{{$slug[$curso->id]}}/{{$curso->codigo}}">{{$curso->codigo}}, {{$curso->descricao}}</a>
+                <a class="curso-link" href="{{url('/')}}/cursos/{{$slug[$curso->id]}}/{{$curso->codigo}}">{{$curso->descricao}}</a>
             @endforeach
         </div>
     </div>

@@ -36,20 +36,20 @@ class GraficosController extends Controller
         foreach ($usuarios as $usuario) {
             $cursoId = $usuario->curso_id;
             $diferenca = ($usuario->ano_egresso - $usuario->ano_ingresso) + 1;
-        
+
             if (!isset($mediaPorCurso[$cursoId])) {
                 $mediaPorCurso[$cursoId] = [
                     'soma' => 0,
                     'quantidade' => 0,
                 ];
             }
-        
+
             $mediaPorCurso[$cursoId]['soma'] += $diferenca;
             $mediaPorCurso[$cursoId]['quantidade']++;
         }
-        
+
         $mediaFinal = [];
-        
+
         foreach ($mediaPorCurso as $cursoId => $dados) {
             $media = $dados['soma'] / $dados['quantidade'];
             $mediaFinal[$cursoId] = round($media, 1);
@@ -58,7 +58,7 @@ class GraficosController extends Controller
         foreach ($cursos as $curso){
             $alunosEmpregados[$curso->id] = $this->usuarios->getAlunosEmpregadosCurso($curso->id);
         }
-        
+
         foreach ($alunosPorCursos as $result) {
             $ano_egresso = $result->ano_egresso;
             $curso_id = $result->id;
@@ -106,6 +106,7 @@ class GraficosController extends Controller
                 }
             }
         }
+        ksort($dadosGraficos);
 
         $this->dadosPagina['dadosGraficos'] = $dadosGraficos;
         $this->dadosPagina['primeiroGrafico'] = reset($dadosGraficos);

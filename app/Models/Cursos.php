@@ -23,8 +23,17 @@ class Cursos extends Model
     public function getCursos(){
         $dados = DB::table($this->table)
             ->select('id', 'codigo', 'descricao')
-            ->orderBy('descricao', 'asc')
+            ->orderBy('id', 'asc')
             ->get();
+        return $dados;
+    }
+
+    public function getCursosById($id){
+        $dados = DB::table($this->table)
+            ->select('id', 'codigo', 'descricao')
+            ->where('id', $id)
+            ->orderBy('descricao', 'asc')
+            ->first();
         return $dados;
     }
 

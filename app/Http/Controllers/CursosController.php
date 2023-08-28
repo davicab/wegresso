@@ -36,8 +36,8 @@ class CursosController extends Controller
             $arrSlug[$curso->id] = Str::slug($rmSufixo, '-'); //seta a posicao da array de acordo com o id do curso e insere o slug desse curso
         }
 
-        // Prepara os dados para a página de visualização e carrega a view correspondente 
-        $this->dadosPagina['slug'] = $arrSlug; 
+        // Prepara os dados para a página de visualização e carrega a view correspondente
+        $this->dadosPagina['slug'] = $arrSlug;
 
         $this->dadosPagina['highUser'] = false;
 
@@ -46,7 +46,7 @@ class CursosController extends Controller
         $this->dadosPagina['auth'] = Auth::check();
 
         // verifica o tipo de usuario para liberar funções, ou não, na view
-        if(Auth::check()){ 
+        if(Auth::check()){
             $userType = Auth::user()->type;
             if($userType == '0' || $userType = 1){
                 $this->dadosPagina['highUser'] = true;
@@ -76,7 +76,7 @@ class CursosController extends Controller
         $authUser = Auth::user(); // captura informações do usuario autenticado
         $canSee = false; // variavel sera usada para liberar ou não a visualizacao do nome dos usuarios
 
-        if($auth && $authUser->type != 2){ // verifica se tem usuario autenticado e se o tipo dele é diferente de 2, caso seja diferente, mantem bloqueada a visualizacao 
+        if($auth && $authUser->type != 2){ // verifica se tem usuario autenticado e se o tipo dele é diferente de 2, caso seja diferente, mantem bloqueada a visualizacao
             $canSee = true;
         }
 
@@ -92,8 +92,11 @@ class CursosController extends Controller
                 $egresso->name = $this->protegerNome($egressoData->name);
             }
             $egresso->ano_egresso = $egressoData->ano_egresso;
+            $egresso->id = $egressoData->id;
             $egressosFormatados[] = $egresso;
         }
+
+        $this->dadosPagina['can_edit'] = $canSee;
 
         $this->dadosPagina['egressos'] = $egressosFormatados;
 

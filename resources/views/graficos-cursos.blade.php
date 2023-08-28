@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 </head>
 <body>
-    {{-- @include('inc/header') --}}
+    @include('inc/header')
     <div class="area-site">
         <div class="breadcrumbs">
             <span> <a href="{{url('')}}" class="back-home">Home</a></span>
@@ -23,7 +23,7 @@
         <div class="area-egressos">
             <div class="select-course">
                 @foreach ($dadosGraficos as $dadosGrafico)
-                    <label class="label-container">
+                    <label class="label-container" id="{{$loop->iteration}}">
                         <input type="checkbox" name="curso" value="{{json_encode($dadosGrafico)}}" @if($loop->iteration == 1) checked @endif> {{$dadosGrafico['labels']}}
                         <span class="checkmark"></span>
                     </label>
