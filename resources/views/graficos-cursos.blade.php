@@ -13,21 +13,22 @@
         <div class="breadcrumbs">
             <span> <a href="{{url('')}}" class="back-home">Home</a></span>
             <img src="{{asset('images/chavron-right.svg')}}" alt="" width="7px" height="10px">
+            <span> <a href="{{url('')}}/cursos" class="back-home">Cursos</a></span>
+            <img src="{{asset('images/chavron-right.svg')}}" alt="" width="7px" height="10px">
             <span>Graficos</span>
         </div>
         <div class="title-home">
-            <h1 class="home-h1">Egressos do curso </h1>
+            <h1 class="home-h1">Representação gráfica dos cursos</h1>
             <hr class="dotted-line">
         </div>
-        {{-- {{dd($dadosGraficos)}} --}}
         <div class="area-egressos">
             <div class="select-course">
-                @foreach ($dadosGraficos as $dadosGrafico)
-                    <label class="label-container" id="{{$loop->iteration}}">
-                        <input type="checkbox" name="curso" value="{{json_encode($dadosGrafico)}}" @if($loop->iteration == 1) checked @endif> {{$dadosGrafico['labels']}}
-                        <span class="checkmark"></span>
-                    </label>
-                @endforeach
+                <select>
+                    @foreach ($dadosGraficos as $dadosGrafico)
+                        <option name="curso" id="{{$dadosGrafico['cod_curso']}}" value="{{json_encode($dadosGrafico)}}" @if(isset($previous_curso) && $dadosGrafico['cod_curso'] == $previous_curso->codigo) selected @endif>{{$dadosGrafico['labels']}}</option>
+                    @endforeach
+                </select>
+                <input type="hidden" id="previous-curso" data-previous-curso="@if(isset($previous_curso)){{ $previous_curso->codigo }} @endif">
             </div>
             <div class="chart-box">
                 <canvas id="chart-1" class="lg-chart" data-dados-grafico="{{json_encode($primeiroGrafico)}}"></canvas>

@@ -57,10 +57,10 @@ class Cursos extends Model
 
     public  static function getQuantidadeAlunoPorCurso(){
         $dados = DB::table('laravel_web.cursos AS C')
-            ->select('U.ano_egresso', 'C.descricao', 'C.id', DB::raw('COUNT(U.id) as count'))
+            ->select('U.ano_egresso', 'C.descricao', 'C.id', DB::raw('COUNT(U.id) as count'), 'C.codigo')
             ->where('type', '2')
             ->join('laravel_web.users AS U', 'C.id', '=', 'U.curso_id')
-            ->groupBy('U.ano_egresso', 'C.descricao', 'C.id')
+            ->groupBy('U.ano_egresso', 'C.descricao', 'C.id', 'C.codigo')
             ->get();
         return $dados;
     }
@@ -78,7 +78,7 @@ class Cursos extends Model
 
     public function getCursoByCodigo($codigo){
         $dados = DB::table($this->table)
-            ->select('id', 'descricao')
+            ->select('id', 'descricao', 'codigo')
             ->where('codigo', $codigo)
             ->first();
         return $dados;

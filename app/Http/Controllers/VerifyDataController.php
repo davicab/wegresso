@@ -129,25 +129,23 @@ class VerifyDataController extends Controller
 
             $curso = $this->cursos->verificarOuCriarCurso($usuario['Código Curso'], $usuario['Descrição do Curso']);
 
-            // if(!$this->usuarios->getAlunoByEmail($usuario['Email Pessoal'])) {
-                try{
+            try{
 
-                    User::create([
-                        'name' => $usuario['Nome'],
-                        'email' => $usuario['Email Pessoal'],
-                        'type' => 2,
-                        'ano_ingresso' => $usuario['Ano de Ingresso'],
-                        'ano_egresso' => $dataFinal,
-                        'permite_dados' => 1,
-                        'status' => 0,
-                        'curso_id' => $curso->id,
-                        'is_employed' => random_int(0, 1),
-                    ]);
-                } catch(\Exception $e) {
-                    var_dump($e);
-                    return redirect('/perfil')->with('responseError', 'Ocorreu um erro, tente novamente.');
-                }
-            // }
+                User::create([
+                    'name' => $usuario['Nome'],
+                    'email' => $usuario['Email Pessoal'],
+                    'type' => 2,
+                    'ano_ingresso' => $usuario['Ano de Ingresso'],
+                    'ano_egresso' => $dataFinal,
+                    'permite_dados' => 1,
+                    'status' => 0,
+                    'curso_id' => $curso->id,
+                    'is_employed' => random_int(0, 1),
+                ]);
+            } catch(\Exception $e) {
+                var_dump($e);
+                return redirect('/perfil')->with('responseError', 'Ocorreu um erro, tente novamente.');
+            }
 
 
         }

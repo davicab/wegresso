@@ -32,7 +32,7 @@
             @endforeach
         </div>
 
-        <a href="{{url('/')}}/cursos/graficos" class="generate-graph">
+        <a href="{{url('/')}}/cursos/graficos?curso={{$cod_curso}}" class="generate-graph">
             <span>Representação gráfica</span>
             <img class="animation-hand" src="{{asset('/images/HandPointing.svg')}}" alt="mão clicando" width="25px" height="25px">
         </a>

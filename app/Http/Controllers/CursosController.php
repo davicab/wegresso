@@ -81,6 +81,7 @@ class CursosController extends Controller
         }
 
         $this->dadosPagina['curso'] = $infoCurso;
+        $this->dadosPagina['cod_curso'] = $codigo;
 
         // Proteger os nomes dos usuários e criar o array $egressosFormatados
         $egressosFormatados = [];

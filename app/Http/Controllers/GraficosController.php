@@ -21,9 +21,15 @@ class GraficosController extends Controller
         $this->dadosPagina = array();
     }
 
-    public function index(){
+    public function index(Request $request){
         $cursos = $this->cursos->getCursos();
+        $previousCurso = $request->curso;
         $alunosEmpregados = [];
+
+        if(!is_null($request->curso)){
+            $previous_curso = $this->cursos->getCursoByCodigo($previousCurso);
+            $this->dadosPagina['previous_curso'] = $previous_curso;
+        }
 
         $alunosPorCursos = $this->cursos->getQuantidadeAlunoPorCurso();
 
@@ -64,9 +70,11 @@ class GraficosController extends Controller
             $curso_id = $result->id;
             $nomeCurso[$curso_id] = $result->descricao;
             $count = $result->count;
+            $codigo_curso = $result->codigo;
 
             if (!isset($dadosGraficos[$curso_id])) {
                 $dadosGraficos[$curso_id] = [
+                    'cod_curso' => $codigo_curso,
                     'labels' => $nomeCurso[$curso_id],
                     'data' => [],
                     'empregados' =>[],
@@ -109,7 +117,11 @@ class GraficosController extends Controller
         ksort($dadosGraficos);
 
         $this->dadosPagina['dadosGraficos'] = $dadosGraficos;
-        $this->dadosPagina['primeiroGrafico'] = reset($dadosGraficos);
+        if(!is_null($request->curso)){
+            $this->dadosPagina['primeiroGrafico'] = $dadosGraficos[$previous_curso->id];
+        }else{
+            $this->dadosPagina['primeiroGrafico'] = reset($dadosGraficos);
+        }
 
         $this->dadosPagina['auth'] = Auth::check();
 

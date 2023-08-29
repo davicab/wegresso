@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent;
 use App\Models\User;
-use App\Models\Usuarios;
 use App\Http\Middleware\Authenticate;
+use App\Models\Cursos;
 
 class PerfilController extends Controller
 {
     private $dadosPagina;
-    private $usuarios;
+    private $curso;
 
     const VIEW = 'perfil';
 
     public function __construct() {
         $this->dadosPagina = array();
+        $this->curso = new Cursos();
     }
 
     public function index(){
@@ -29,27 +29,20 @@ class PerfilController extends Controller
         $userId = Auth::user()->id;
         $userCurso = Auth::user()->curso_id;
 
-        $rightCursos = [
-            1 => 'Engenharia de Computação',
-            2 => 'Engenharia Elétrica',
-            3 =>'Engenharia Civil' ,
-        ];
+        $rightCursos = $this->curso->getCursosById($userCurso);
 
-        if($userType != '2'){
-            return redirect('/painel-administracao');
-        }else{
-            $this->dadosPagina['user'] = 'aluno';
-            $this->dadosPagina['id'] = $userId;
-            $this->dadosPagina['name'] = Auth::user()->name;
-            $this->dadosPagina['curso'] = $rightCursos[$userCurso];
-            $this->dadosPagina['empregado'] = Auth::user()->is_employed;
-            $this->dadosPagina['ano_egresso'] = Auth::user()->ano_egresso;
-            $this->dadosPagina['ano_ingresso'] = Auth::user()->ano_ingresso;
-            $this->dadosPagina['atual_emprego'] = Auth::user()->atual_emprego;
-            $this->dadosPagina['experiencias'] = Auth::user()->experiencias;
-            $this->dadosPagina['permite_dados'] = Auth::user()->permite_dados;
-        }
-
+        if($userType != '2') return redirect('/painel-administracao');
+        
+        $this->dadosPagina['user'] = 'aluno';
+        $this->dadosPagina['id'] = $userId;
+        $this->dadosPagina['name'] = Auth::user()->name;
+        $this->dadosPagina['curso'] = $rightCursos->descricao;
+        $this->dadosPagina['empregado'] = Auth::user()->is_employed;
+        $this->dadosPagina['ano_egresso'] = Auth::user()->ano_egresso;
+        $this->dadosPagina['ano_ingresso'] = Auth::user()->ano_ingresso;
+        $this->dadosPagina['atual_emprego'] = Auth::user()->atual_emprego;
+        $this->dadosPagina['experiencias'] = Auth::user()->experiencias;
+        $this->dadosPagina['permite_dados'] = Auth::user()->permite_dados;
 
         $this->dadosPagina['auth'] = Auth::check();
 

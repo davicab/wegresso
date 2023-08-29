@@ -11,7 +11,7 @@ switch (currentPage){
     case 'curso':
       break
     case 'graficos':
-        handleCheck();
+        handleSelectChange();
         document.addEventListener('DOMContentLoaded', function() {
           chartBarReload();
           chartLineReload();
@@ -176,8 +176,18 @@ function createChart4(){
     options: {
       responsive: true,
       scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Ano'
+          }
+        },
         y: {
-          beginAtZero: true
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Alunos empregados'
+          }
         }
       }
     }
@@ -186,42 +196,32 @@ function createChart4(){
 let loadChart;
 let loadLineChart;
 let loadHChart;
-function handleCheck(){
-    let checkboxes = document.getElementsByName('curso');
-    const canvas = document.getElementById('chart-1');
+function handleSelectChange() {
+  const select = document.querySelector('select');
 
-    checkboxes.forEach((item, index) => {
+  select.addEventListener("change", () => {
+      const selectedItem = select.options[select.selectedIndex];
+      
+      if (!selectedItem.value) return;
 
-        var cut_index = [...checkboxes]
-        cut_index.splice(index, 1);
+      const obj = JSON.parse(selectedItem.value);
 
-        item.addEventListener("click", () =>{
-
-            if(item.checked == false) return
-
-            cut_index.forEach((item, index) => {
-                cut_index[index].checked = false
-            });
-
-            if (item.checked) {
-                const obj = JSON.parse(item.value)
-
-                loadChart.data.datasets[0].data = obj.data;
-                loadChart.data.datasets[0].label = `Egressos de ${obj.labels}`
-                loadChart.update();
-
-                loadLineChart.data.datasets[0].data = obj.empregados;
-                loadLineChart.update();
-
-                loadHChart.data.datasets[0].data = [obj.media];
-                loadHChart.data.labels = [obj.labels]
-                loadHChart.update();
-            } else {
-                canvas.dataset.dadosGrafico = "";
-            }
-        })
-    });
+      updateCharts(obj);
+  });
 }
+function updateCharts(obj) {
+  loadChart.data.datasets[0].data = obj.data;
+  loadChart.data.datasets[0].label = `Egressos de ${obj.labels}`;
+  loadChart.update();
+
+  loadLineChart.data.datasets[0].data = obj.empregados;
+  loadLineChart.update();
+
+  loadHChart.data.datasets[0].data = [obj.media];
+  loadHChart.data.labels = [obj.labels];
+  loadHChart.update();
+}
+
 function chartBarReload() {
     const chartDataElement = document.getElementById('chart-1');
     const jsonString = chartDataElement.getAttribute('data-dados-grafico');
@@ -348,3 +348,12 @@ function chartHoBarReload(){
 function goBack() {
     window.history.back();
 }
+function openMenu(){
+  let menuBut = document.querySelector('.menu-mobile')
+
+  let side = document.querySelector('.side-menu')
+  menuBut.addEventListener(('click'), () =>{
+    side.classList.toggle('opened')
+  })
+}
+openMenu()
