@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 </head>
 <body>
-    {{-- @include('inc/header') --}}
+    @include('inc/header')
     <div class="area-site">
         <div class="title-home">
             <h1 class="home-h1">Verificação de dados de {{$infoUser->name}}</h1>
@@ -17,7 +17,7 @@
         {{-- {{dd($infoUser)}} --}}
         <form class="perfil-form" method="POST" action="{{ url('/') }}/validar-dados/{{$infoUser->id}}">
             @method('PUT')
-            @csrf 
+            @csrf
             <div class="full-box">
                 <label for="atual_emprego">Atual Emprego:</label>
                 <input class="form-control" type="text" maxlength="200" name="atual_emprego" id="atual_emprego" value="{{ isset($infoUser->atual_emprego) ? $infoUser->atual_emprego : '' }}" placeholder="Atual Emprego" readonly>
@@ -38,7 +38,7 @@
         </form>
         {{-- {{dd($curso , $empregado, $ano_egresso, $ano_ingresso)}} --}}
     </div>
-    {{-- @include('inc/footer') --}}
+    @include('inc/footer')
 </body>
 <script>
     var page = 'verificar';
