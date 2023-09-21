@@ -14,6 +14,7 @@
             <span> <a href="{{url('')}}" class="back-home">Home</a></span>
             <img src="{{asset('images/chavron-right.svg')}}" alt="" width="7px" height="10px">
             <span> <a href="{{url('')}}/cursos" class="back-home">Lista de cursos</a></span>
+            <img src="{{asset('images/chavron-right.svg')}}" alt="" width="7px" height="10px">
             <span>Listagem de egressos do curso {{$curso->descricao}}</span>
         </div>
         <div class="title-home">

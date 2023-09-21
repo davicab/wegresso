@@ -111,6 +111,7 @@ class Usuarios extends Model
         $dados = DB::table($this->table)
             ->select('id','name')
             ->where('is_employed', '1')
+            ->where('type', '2')
             ->where('status', '0')
             ->whereNotNull('experiencias')
             ->orderBy('ano_egresso', 'asc')

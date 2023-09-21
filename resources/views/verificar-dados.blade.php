@@ -14,23 +14,33 @@
             <h1 class="home-h1">Painel de administração</h1>
             <hr class="dotted-line">
         </div>
-        <div class="form-box">
+        <div class="verificar-alunos">
             @if(!$nao_verificados->isNotEmpty())
                 <span>Sem dados de usuários para serem validados</span>
             @else
-                @foreach($nao_verificados as $aluno)
-                    <a class="single-user" id="{{$aluno->id}}" href="{{url('/')}}/validar-egresso/{{$aluno->id}}">{{$aluno->name}}</a>
-                @endforeach
+                <h2>Alunos com dados a serem verificados: </h2>
+                <div class="alunos-box">
+                    @foreach($nao_verificados as $aluno)
+                        <div class="aluno-item">
+                            <a class="single-user" id="{{$aluno->id}}" href="{{url('/')}}/validar-egresso/{{$aluno->id}}">{{$aluno->name}}</a>
+                        </div>
+                    @endforeach
+                </div>
             @endif
         </div>
         <div class="form-box">
             <h2>Cursos da instituição: </h2>
             @if(isset($cursos) && $cursos->isNotEmpty())
-                @foreach($cursos as $curso)
-                <span>{{$curso->descricao}}</span>
-                <br>
-                @endforeach
+                <div class="alunos-box">
+                    @foreach($cursos as $curso)
+                        <div class="aluno-item">
+                            <span>{{$curso->descricao}}</span>
+                        </div>
+                    @endforeach
+                </div>
             @endif
+        </div>
+        <div class="form-box">
             <h3>Criação de novos cursos: </h3>
             <form method="POST" action="{{ url('/') }}/create-curso" class="perfil-form">
                 @method('PUT')

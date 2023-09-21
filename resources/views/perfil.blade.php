@@ -18,7 +18,7 @@
             @if(isset($user) && $user == 'aluno')
                 <form class="perfil-form" method="POST" action="{{ url('/') }}/salvar-perfil/{{$id}}">
                     @method('PUT')
-                    @csrf 
+                    @csrf
                     <div class="half-box">
                         <label for="curso">Curso:</label>
                         <input class="form-control" type="text" maxlength="200" name="curso" id="curso" value="{{ isset($curso) ? $curso : '' }}" placeholder="Curso" readonly>
@@ -48,13 +48,13 @@
                     </div>
                     <div class="full-box">
                         <label for="atual_emprego">Atual Emprego:</label>
-                        <input class="form-control" type="text" maxlength="200" name="atual_emprego" id="atual_emprego" value="{{ isset($atual_emprego) ? $atual_emprego : '' }}" placeholder="Atual Emprego">
+                        <input class="form-control" type="text" maxlength="200" name="atual_emprego" id="atual_emprego" required value="{{ isset($atual_emprego) ? $atual_emprego : '' }}" placeholder="Atual Emprego">
                     </div>
                     <div class="full-box">
                         <label for="experiencias">Experiências:</label>
-                        <textarea class="form-control" name="experiencias" id="experiencias" maxlength="1000" placeholder="Experiências">{{ isset($experiencias) ? $experiencias : '' }}</textarea>
+                        <textarea class="form-control" name="experiencias" id="experiencias" maxlength="1000" required placeholder="Experiências">{{ isset($experiencias) ? $experiencias : '' }}</textarea>
                     </div>
-                
+
                     <button class="update-user" type="submit">Salvar</button>
                 </form>
             @endif

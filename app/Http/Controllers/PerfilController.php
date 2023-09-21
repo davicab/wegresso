@@ -32,7 +32,7 @@ class PerfilController extends Controller
         $rightCursos = $this->curso->getCursosById($userCurso);
 
         if($userType != '2') return redirect('/painel-administracao');
-        
+
         $this->dadosPagina['user'] = 'aluno';
         $this->dadosPagina['id'] = $userId;
         $this->dadosPagina['name'] = Auth::user()->name;
@@ -63,18 +63,6 @@ class PerfilController extends Controller
         if ($userType != 2 || $aluno->id !== $userId) {
             return redirect('/perfil')->with('responseError', 'Permissão negada.');
         }
-
-
-        $this->validate($request, [
-            'curso_id' => 'required|max:200',
-            'ano_ingresso' => 'required|date_format:Y',      
-            'ano_egresso' => 'required|date_format:Y',
-            'is_employed' => 'nullable|max:1',
-            'permite_dados' => 'nullable|max:1',
-            'atual_emprego' => 'nullable|max:200',
-            'experiencias' => 'nullable|max:1000',  
-        ]);
-
 
         $aluno->is_employed = $request->input('empregado');
         $aluno->permite_dados = $request->input('permite_dados');
