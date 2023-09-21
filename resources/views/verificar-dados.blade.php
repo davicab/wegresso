@@ -48,7 +48,7 @@
         </div>
         <div class="form-box">
             <h2>Egressos da instituição: </h2>
-            <form method="POST" action="{{ url('/') }}/import-data" class="perfil-form">
+            {{-- <form method="POST" action="{{ url('/') }}/import-data" class="perfil-form">
                 @method('PUT')
                 @csrf
                 <div class="full-box">
@@ -59,6 +59,13 @@
                     </select>
                 </div>
                 <button class="update-user" type="submit">Salvar</button>
+            </form> --}}
+            <form action="/receive-csv" method="POST" enctype="multipart/form-data">
+                @method('PUT')
+                @csrf 
+                <label for="arquivo">Selecione um arquivo CSV - APENAS CSV:</label>
+                <input type="file" name="arquivo" id="arquivo" accept=".csv" required>
+                <button type="submit">Enviar Arquivo</button>
             </form>
         </div>
         {{-- {{dd($curso , $empregado, $ano_egresso, $ano_ingresso)}} --}}

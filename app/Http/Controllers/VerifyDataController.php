@@ -97,16 +97,29 @@ class VerifyDataController extends Controller
             return redirect('/painel-administracao')->with('responseError', 'Ocorreu um erro, tente novamente.');
         }
     }
+    
+    public function convertData(Request $request){
+        $arquivoCSV = $request->arquivo;
+        $csvData = file_get_contents($arquivoCSV);
+        $lines = explode(PHP_EOL, $csvData);
+        $header = str_getcsv(array_shift($lines), ";");
+        $result = [];
+    
+        foreach ($lines as $line) {
+            $row = str_getcsv($line, ";");
+            $rowData = [];
+            foreach ($header as $index => $columnName) {
+                $rowData[$columnName] = $row[$index];
+            }
+            $result[] = $rowData;
+        }
 
-    public function importData(Request $request){
+        return $this->importData(json_encode($result));
+    }
 
-        $resp = $request->question;
+    public function importData($json_alunos){
 
-        if(!$resp = "1") return redirect('/painel-administracao')->with('responseError', 'Importação não permitida.');
-
-        $jsonData = file_get_contents('../public/files/alunos.json');
-
-        $cleanData = json_decode($jsonData, true);
+        $cleanData = json_decode($json_alunos, true);
 
         $usuariosConcluidos = array_filter($cleanData, function ($usuario) {
             return $usuario['Situação no Curso'] === 'Concluído' || $usuario['Situação no Curso'] === 'Formado';
@@ -130,7 +143,6 @@ class VerifyDataController extends Controller
             $curso = $this->cursos->verificarOuCriarCurso($usuario['Código Curso'], $usuario['Descrição do Curso']);
 
             try{
-
                 User::create([
                     'name' => $usuario['Nome'],
                     'email' => $usuario['Email Pessoal'],
@@ -143,15 +155,11 @@ class VerifyDataController extends Controller
                     'is_employed' => random_int(0, 1),
                 ]);
             } catch(\Exception $e) {
-                var_dump($e);
                 return redirect('/perfil')->with('responseError', 'Ocorreu um erro, tente novamente.');
             }
 
-
         }
-
         return redirect('/painel-administracao')->with('responseSuccess', 'Usuário salvos com sucesso.');
-
-
     }
+
 }
