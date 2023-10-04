@@ -802,3 +802,47 @@ footer{
     display: flex;
     flex-direction: column;
 }
+/* Estilo para o título */
+.form-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+  
+  /* Estilo para o rótulo */
+.form-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+  
+  /* Estilo para o input de arquivo */
+.file-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+  
+  /* Estilo para o botão de envio */
+.submit-button {
+    background-color: #17882C;
+    color: #fff;
+    width: 150px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: 900;
+}
+  
+  /* Estilo para o botão de envio ao passar o mouse */
+.submit-button:hover {
+    background-color: #00510F;
+}
+.import-form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}

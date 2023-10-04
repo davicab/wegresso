@@ -121,6 +121,7 @@ class Usuarios extends Model
     public function getAllAlunos(){
         $dados = DB::table('users')
             ->select('curso_id', 'ano_ingresso', 'ano_egresso')
+            ->where('type', '2')
             ->get();
         return $dados;
     }

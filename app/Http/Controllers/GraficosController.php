@@ -21,50 +21,42 @@ class GraficosController extends Controller
         $this->dadosPagina = array();
     }
 
+    /**
+     * Exibe a página de gráficos de cursos.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request){
+        // Obtém a lista de cursos
         $cursos = $this->cursos->getCursos();
         $previousCurso = $request->curso;
         $alunosEmpregados = [];
 
+        // Verifica se um curso anterior foi selecionado
         if(!is_null($request->curso)){
             $previous_curso = $this->cursos->getCursoByCodigo($previousCurso);
             $this->dadosPagina['previous_curso'] = $previous_curso;
         }
 
+        // Obtém a quantidade de alunos por curso
         $alunosPorCursos = $this->cursos->getQuantidadeAlunoPorCurso();
 
         $nomeCurso = [];
         $dadosGraficos = [];
 
-
+        // Obtém todos os alunos
         $usuarios = $this->usuarios->getAllAlunos();
+        
+        // Calcula a media de tempo de conclusão de cada curso
+        $mediaFinal = $this->generateMedia($usuarios);
 
-        foreach ($usuarios as $usuario) {
-            $cursoId = $usuario->curso_id;
-            $diferenca = ($usuario->ano_egresso - $usuario->ano_ingresso) + 1;
-
-            if (!isset($mediaPorCurso[$cursoId])) {
-                $mediaPorCurso[$cursoId] = [
-                    'soma' => 0,
-                    'quantidade' => 0,
-                ];
-            }
-
-            $mediaPorCurso[$cursoId]['soma'] += $diferenca;
-            $mediaPorCurso[$cursoId]['quantidade']++;
-        }
-
-        $mediaFinal = [];
-
-        foreach ($mediaPorCurso as $cursoId => $dados) {
-            $media = $dados['soma'] / $dados['quantidade'];
-            $mediaFinal[$cursoId] = round($media, 1);
-        }
-
+        // Obtém o número de alunos empregados por curso
         foreach ($cursos as $curso){
             $alunosEmpregados[$curso->id] = $this->usuarios->getAlunosEmpregadosCurso($curso->id);
         }
 
+        // Prepara os dados para gráficos
         foreach ($alunosPorCursos as $result) {
             $ano_egresso = $result->ano_egresso;
             $curso_id = $result->id;
@@ -85,7 +77,7 @@ class GraficosController extends Controller
             $dadosGraficos[$curso_id]['data'][$ano_egresso] = $count;
         }
 
-        // Preencher os anos ausentes com '0' em cada curso
+        // Preenche anos ausentes com '0' em cada curso
         foreach ($dadosGraficos as &$curso) {
             $primeiroAno = min(array_keys($curso['data']));
             $ultimoAno = max(array_keys($curso['data']));
@@ -104,6 +96,7 @@ class GraficosController extends Controller
             ksort($curso['data']);
         }
 
+        // Associa o número de alunos empregados por ano e curso
         foreach ($dadosGraficos as $curso_id => &$curso) {
             foreach ($alunosEmpregados[$curso_id] as $aluno) {
                 $ano_egresso = $aluno->ano_egresso;
@@ -116,7 +109,12 @@ class GraficosController extends Controller
         }
         ksort($dadosGraficos);
 
+        dd($dadosGraficos);
+
+        // Define os dados para a view
         $this->dadosPagina['dadosGraficos'] = $dadosGraficos;
+
+        // Seleciona qual curso será o primeiro carregado na pagina
         if(!is_null($request->curso)){
             $this->dadosPagina['primeiroGrafico'] = $dadosGraficos[$previous_curso->id];
         }else{
@@ -125,7 +123,35 @@ class GraficosController extends Controller
 
         $this->dadosPagina['auth'] = Auth::check();
 
+        // Exibe a view dos gráficos de cursos
         return view(self::VIEW, $this->dadosPagina);
     }
 
+    public function generateMedia($usuarios){
+        $mediaPorCurso = [];
+    
+        foreach ($usuarios as $usuario) {
+            $cursoId = $usuario->curso_id;
+            $diferenca = ($usuario->ano_egresso - $usuario->ano_ingresso) + 1;
+    
+            if (!isset($mediaPorCurso[$cursoId])) {
+                $mediaPorCurso[$cursoId] = [
+                    'soma' => 0,
+                    'quantidade' => 0,
+                ];
+            }
+    
+            $mediaPorCurso[$cursoId]['soma'] += $diferenca;
+            $mediaPorCurso[$cursoId]['quantidade']++;
+        }
+    
+        $mediaFinal = [];
+    
+        foreach ($mediaPorCurso as $cursoId => $dados) {
+            $media = round($dados['soma'] / $dados['quantidade'], 1);
+            $mediaFinal[$cursoId] = $media;
+        }
+    
+        return $mediaFinal;
+    }
 }

@@ -82,7 +82,10 @@ class VerifyDataController extends Controller
         }
     }
 
-    public function createCurso(Request $request){
+    public function createCurso(Request $request){        
+        if(!Auth::check()) return redirect('/login');
+
+        if(Auth::user()->type == '2') return redirect('/')->with('responseError', 'Permissão negada.');
 
         $curso = $this->cursos;
 
@@ -99,6 +102,10 @@ class VerifyDataController extends Controller
     }
     
     public function convertData(Request $request){
+        if(!Auth::check()) return redirect('/login');
+
+        if(Auth::user()->type == '2') return redirect('/')->with('responseError', 'Permissão negada.');
+
         $arquivoCSV = $request->arquivo;
         $csvData = file_get_contents($arquivoCSV);
         $lines = explode(PHP_EOL, $csvData);
@@ -118,6 +125,10 @@ class VerifyDataController extends Controller
     }
 
     public function importData($json_alunos){
+
+        if(!Auth::check()) return redirect('/login');
+
+        if(Auth::user()->type == '2') return redirect('/')->with('responseError', 'Permissão negada.');
 
         $cleanData = json_decode($json_alunos, true);
 
@@ -155,7 +166,7 @@ class VerifyDataController extends Controller
                     'is_employed' => random_int(0, 1),
                 ]);
             } catch(\Exception $e) {
-                return redirect('/perfil')->with('responseError', 'Ocorreu um erro, tente novamente.');
+                continue;
             }
 
         }

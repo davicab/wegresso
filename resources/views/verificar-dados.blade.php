@@ -57,28 +57,15 @@
             </form>
         </div>
         <div class="form-box">
-            <h2>Egressos da instituição: </h2>
-            {{-- <form method="POST" action="{{ url('/') }}/import-data" class="perfil-form">
-                @method('PUT')
-                @csrf
-                <div class="full-box">
-                    <label for="question">Importar usuarios do arquivo importado ?</label>
-                    <select class="form-control" name="question" id="question" required>
-                        <option value="1" {{ isset($question) && $question == 1 ? 'selected' : '' }}>Sim</option>
-                        <option value="0" {{ isset($question) && $question == 0 ? 'selected' : '' }}>Não</option>
-                    </select>
-                </div>
-                <button class="update-user" type="submit">Salvar</button>
-            </form> --}}
-            <form action="/receive-csv" method="POST" enctype="multipart/form-data">
+            <h2>Importação de alunos e cursos: </h2>
+            <form class="import-form" action="/receive-csv" method="POST" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf 
-                <label for="arquivo">Selecione um arquivo CSV - APENAS CSV:</label>
-                <input type="file" name="arquivo" id="arquivo" accept=".csv" required>
-                <button type="submit">Enviar Arquivo</button>
+                <label for="arquivo" class="form-label">Selecione um arquivo CSV - APENAS CSV:</label>
+                <input type="file" name="arquivo" id="arquivo" class="file-input" accept=".csv" required>
+                <button type="submit" class="update-user">Enviar Arquivo</button>
             </form>
         </div>
-        {{-- {{dd($curso , $empregado, $ano_egresso, $ano_ingresso)}} --}}
     </div>
     @include('inc/footer')
 </body>
