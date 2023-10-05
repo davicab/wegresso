@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use PhpParser\Node\Expr\FuncCall;
 
 class Cursos extends Model
 {
@@ -20,6 +18,11 @@ class Cursos extends Model
         'descricao',
     ];
 
+    /**
+     * Obtém todos os cursos.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getCursos(){
         $dados = DB::table($this->table)
             ->select('id', 'codigo', 'descricao')
@@ -28,6 +31,12 @@ class Cursos extends Model
         return $dados;
     }
 
+    /**
+     * Obtém um curso pelo ID.
+     *
+     * @param int $id
+     * @return object|null
+     */
     public function getCursosById($id){
         $dados = DB::table($this->table)
             ->select('id', 'codigo', 'descricao')
@@ -37,7 +46,13 @@ class Cursos extends Model
         return $dados;
     }
 
-
+    /**
+     * Verifica se um curso existe pelo código e cria se não existir.
+     *
+     * @param string $codigoCurso
+     * @param string $descricaoCurso
+     * @return object
+     */
     public function verificarOuCriarCurso($codigoCurso , $descricaoCurso){
 
         $curso = Cursos::where('codigo', $codigoCurso)->first();
@@ -51,10 +66,13 @@ class Cursos extends Model
         }
 
         return $curso;
-
-
     }
 
+    /**
+     * Obtém a quantidade de alunos por curso.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public  static function getQuantidadeAlunoPorCurso(){
         $dados = DB::table('laravel_web.cursos AS C')
             ->select('U.ano_egresso', 'C.descricao', 'C.id', DB::raw('COUNT(U.id) as count'), 'C.codigo')
@@ -65,6 +83,11 @@ class Cursos extends Model
         return $dados;
     }
 
+    /**
+     * Obtém a quantidade de alunos empregados por curso.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public  static function getQuantidadeEmpregadosPorCurso(){
         $dados = DB::table('laravel_web.cursos AS C')
             ->select('U.ano_egresso', 'C.descricao', 'C.id', DB::raw('COUNT(U.id) as count'))
@@ -76,6 +99,12 @@ class Cursos extends Model
         return $dados;
     }
 
+    /**
+     * Obtém um curso pelo código.
+     *
+     * @param string $codigo
+     * @return object|null
+     */
     public function getCursoByCodigo($codigo){
         $dados = DB::table($this->table)
             ->select('id', 'descricao', 'codigo')
@@ -83,5 +112,4 @@ class Cursos extends Model
             ->first();
         return $dados;
     }
-
 }

@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+
 class Usuarios extends Model
 {
     use HasFactory;
-
 
     protected $table = 'users';
 
@@ -19,16 +19,13 @@ class Usuarios extends Model
         'status',
         'permite_dados',
         'type',
-
     ];
 
-    // Usuarios type = 0 -- Root
-    // Usuarios type = 1 -- Administradores
-    // Usuarios type = 2 -- Alunos
-
-    // status = 0 -- dados não verificados
-    // status = 1 -- dados verificados
-
+    /**
+     * Obtém todos os alunos com dados permitidos.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getAlunos(){
         $dados = DB::table($this->table)
             ->select('id', 'name', 'ano_egresso', 'curso_id')
@@ -39,6 +36,11 @@ class Usuarios extends Model
         return $dados;
     }
 
+    /**
+     * Obtém o número de alunos por curso.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getAlunosPorCurso()
     {
         $alunosPorCurso = DB::table('users')
@@ -50,6 +52,11 @@ class Usuarios extends Model
         return $alunosPorCurso;
     }
 
+    /**
+     * Obtém a contagem de alunos agrupados por ano de egresso.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getAlunosAgrupadosPorAnoEgresso(){
         $dados = DB::table($this->table)
             ->where('type', '2')
@@ -61,6 +68,12 @@ class Usuarios extends Model
         return $dados;
     }
 
+    /**
+     * Obtém informações de um usuário pelo ID.
+     *
+     * @param int $id
+     * @return object|null
+     */
     public function getUserById($id){
         $dados = DB::table($this->table)
             ->select('id','email', 'name', 'curso_id', 'is_employed', 'ano_egresso', 'ano_ingresso', 'status', 'experiencias', 'atual_emprego')
@@ -70,7 +83,11 @@ class Usuarios extends Model
         return $dados;
     }
 
-
+    /**
+     * Obtém a contagem de alunos empregados por ano de egresso.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getAlunosEmpregados(){
         $dados = DB::table($this->table)
             ->select('ano_egresso')
@@ -83,6 +100,12 @@ class Usuarios extends Model
         return $dados;
     }
 
+    /**
+     * Obtém os alunos de um curso específico.
+     *
+     * @param int $id
+     * @return \Illuminate\Support\Collection
+     */
     public function getAlunoByCurso($id){
         $dados = DB::table($this->table)
             ->select('name', 'id', 'ano_egresso', 'ano_ingresso')
@@ -94,6 +117,12 @@ class Usuarios extends Model
         return $dados;
     }
 
+    /**
+     * Obtém a contagem de alunos empregados por ano de egresso para um curso específico.
+     *
+     * @param int $curso
+     * @return \Illuminate\Support\Collection
+     */
     public function getAlunosEmpregadosCurso($curso){
         $dados = DB::table($this->table)
             ->select('ano_egresso')
@@ -107,6 +136,11 @@ class Usuarios extends Model
         return $dados;
     }
 
+    /**
+     * Obtém dados de alunos não verificados e empregados.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getDadosAlunos(){
         $dados = DB::table($this->table)
             ->select('id','name')
@@ -118,6 +152,12 @@ class Usuarios extends Model
             ->get();
         return $dados;
     }
+
+    /**
+     * Obtém todos os alunos.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getAllAlunos(){
         $dados = DB::table('users')
             ->select('curso_id', 'ano_ingresso', 'ano_egresso')
@@ -126,6 +166,12 @@ class Usuarios extends Model
         return $dados;
     }
 
+    /**
+     * Obtém um usuário pelo email.
+     *
+     * @param string $email
+     * @return object|null
+     */
     public function getAlunoByEmail($email){
         $dados = DB::table($this->table)
             ->select('id')

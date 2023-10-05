@@ -107,9 +107,8 @@ class GraficosController extends Controller
                 }
             }
         }
+        // ordena por id do curso
         ksort($dadosGraficos);
-
-        dd($dadosGraficos);
 
         // Define os dados para a view
         $this->dadosPagina['dadosGraficos'] = $dadosGraficos;
