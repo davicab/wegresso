@@ -31,7 +31,7 @@ class HomeController extends Controller
         $allCursos = $this->cursos->getCursos();
     
         // Obtém a contagem de alunos por curso
-        $usariosPorCurso = $this->usuarios->getAlunosPorCurso();
+        $alunosPorCurso = $this->usuarios->getAlunosPorCurso();
     
         // Inicializa arrays para armazenar dados de cursos e alunos
         $arrCurso = [];
@@ -41,8 +41,8 @@ class HomeController extends Controller
         for ($i = 0; $i < count($allCursos); $i++) {
             $arrCurso[$i] = $allCursos[$i]->descricao;
     
-            if ($usariosPorCurso[$i]) {
-                $arrAluno[$i] = $usariosPorCurso[$i]->total_alunos;
+            if ($alunosPorCurso[$i]) {
+                $arrAluno[$i] = $alunosPorCurso[$i]->total_alunos;
             }
         }
     
@@ -53,13 +53,13 @@ class HomeController extends Controller
         $alunosEmpregados = $this->usuarios->getAlunosEmpregados();
     
         // Obtém a quantidade de alunos por curso
-        $alunosPorCursos = $this->cursos->getQuantidadeAlunoPorCurso();
+        $qtdAlunosPorCursos = $this->cursos->getQuantidadeAlunoPorCurso();
     
         // Inicializa um array para armazenar dados de gráfico de barra empilhada
         $dadosGraficoStack = [];
     
         // Preenche o array de gráfico de barra empilhada com dados de alunos por curso e ano de egresso
-        foreach ($alunosPorCursos as $result) {
+        foreach ($qtdAlunosPorCursos as $result) {
             $ano_egresso = $result->ano_egresso; //seleciona o ano em que o aluno se torna um egresso
             $curso_id = $result->id; //seleciona o id do curso
             $nomeCurso[$curso_id] = $result->descricao; //seleciona o nome do curso com base no id
