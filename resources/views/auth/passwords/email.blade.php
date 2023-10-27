@@ -14,8 +14,8 @@
 
                 <div class="card-body">
                     @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            <strong>Link de redefinição de senha enviado!</strong>
+                        <div class="alert alert-success" role="alert" style="text-align: center">
+                            <strong>Link de redefinição de senha enviado para seu email!</strong>
                         </div>
                     @endif
                     <div class="custom-form">

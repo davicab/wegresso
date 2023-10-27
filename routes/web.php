@@ -62,9 +62,9 @@ Route::get('/cursos/{slug}/{codigo}', [CursosController::class, 'singleCurso']);
 Route::get('/cursos/graficos', [GraficosController::class, 'index']);
 
 // Redirecionamento da rota /register
-Route::get('/register', function () {
-    return redirect()->to(config('app.url') . '/register', 301);
-});
+// Route::get('/register', function () {
+//     return redirect()->to(config('app.url') . '/register', 301);
+// });
 
 // Redirecionamento da rota /logout
 Route::get('/logout', function () {

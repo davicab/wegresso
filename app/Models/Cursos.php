@@ -74,10 +74,10 @@ class Cursos extends Model
      * @return \Illuminate\Support\Collection
      */
     public  static function getQuantidadeAlunoPorCurso(){
-        $dados = DB::table('laravel_web.cursos AS C')
+        $dados = DB::table('wegresso_table.cursos AS C')
             ->select('U.ano_egresso', 'C.descricao', 'C.id', DB::raw('COUNT(U.id) as count'), 'C.codigo')
             ->where('type', '2')
-            ->join('laravel_web.users AS U', 'C.id', '=', 'U.curso_id')
+            ->join('wegresso_table.users AS U', 'C.id', '=', 'U.curso_id')
             ->groupBy('U.ano_egresso', 'C.descricao', 'C.id', 'C.codigo')
             ->get();
         return $dados;
@@ -89,11 +89,11 @@ class Cursos extends Model
      * @return \Illuminate\Support\Collection
      */
     public  static function getQuantidadeEmpregadosPorCurso(){
-        $dados = DB::table('laravel_web.cursos AS C')
+        $dados = DB::table('wegresso_table.cursos AS C')
             ->select('U.ano_egresso', 'C.descricao', 'C.id', DB::raw('COUNT(U.id) as count'))
             ->where('U.type', '2')
             ->where('U.is_employed', '1')
-            ->join('laravel_web.users AS U', 'C.id', '=', 'U.curso_id')
+            ->join('wegresso_table.users AS U', 'C.id', '=', 'U.curso_id')
             ->groupBy('U.ano_egresso', 'C.descricao', 'C.id')
             ->get();
         return $dados;
