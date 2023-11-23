@@ -21,8 +21,8 @@
                     <canvas id="chart-1" class="lg-chart" data-dados-grafico="{{ $dadosGrafico }}"></canvas>
                 </div>
                 <div class="chart-block">
-                    <span>Egressos por curso</span>
-                    <canvas id="chart-2" class="lg-chart" data-dados-grafico="{{ $dadosGraficoPie }}"></canvas>
+                    <span>Egressos alocados no mercado de trabalho</span>
+                    <canvas id="chart-4" class="lg-chart" data-dados-grafico="{{ $dadosGraficoBars }}"></canvas>
                 </div>
             </div>
             <div class="third-block">
@@ -31,8 +31,8 @@
                     <canvas id="chart-3" class="lg-chart" data-dados-grafico="{{ $dadosGraficoStack }}"></canvas>
                 </div>
                 <div class="chart-block">
-                    <span>Egressos alocados no mercado de trabalho</span>
-                    <canvas id="chart-4" class="lg-chart" data-dados-grafico="{{ $dadosGraficoBars }}"></canvas>
+                    <span>Egressos por curso</span>
+                    <canvas id="chart-2" class="lg-chart" data-dados-grafico="{{ $dadosGraficoPie }}"></canvas>
                 </div>
             </div>
         </div>
